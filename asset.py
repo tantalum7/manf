@@ -7,7 +7,13 @@ class AssetDeletedError(Exception):
 class Asset(object):
 
     def __init__(self, db, fields=None, id=None):
-
+        """
+        Initialiser
+        :param db:
+        :param fields:
+        :param id:
+        :return:
+        """
         # Init class vars
         self.db         = db
         self._deleted   = False
@@ -26,7 +32,8 @@ class Asset(object):
 
     def get_field(self, field):
         """
-        Returns the value of a field
+        Returns the value of an asset field
+
         :param field:
         :return:
         """
@@ -39,7 +46,7 @@ class Asset(object):
         if self._deleted:
             raise AssetDeletedError()
 
-        if field in self.get_fields():
+        if field in self.get_fields_list():
             self.db.update_one({"_id" : self.id}, {"$set":{field : value}})
 
     def get_fields_list(self):

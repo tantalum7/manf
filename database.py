@@ -10,7 +10,7 @@ class Database(object):
 
     def __init__(self):
 
-        self.client = MongoClient("45.58.35.135", 27027)
+        self.client = MongoClient("45.58.35.135", 80)
 
         self.client.database_names()
 
