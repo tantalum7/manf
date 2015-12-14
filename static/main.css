@@ -11,7 +11,7 @@ button
     font-weight:                bold;
     color:                      white;
     background-color:           rgb(84, 100, 107);
-    padding:                    10px;
+    padding:                    5px;
     border:                     none;
     height:                     24px;
     line-height:                6px;
@@ -25,7 +25,13 @@ button:hover
     cursor:                     pointer;
 }
 
-
+.icon
+{
+    font-size:                  12px;
+    color:                      white;
+    #padding:                    5px;
+    margin-right:               3px;
+}
 
 .page
 {
@@ -39,6 +45,10 @@ button:hover
     padding:                    10px;
 }
 
+.invisible
+{
+    display:                    None;
+}
 
 .asset_summary_container
 {
@@ -49,7 +59,7 @@ button:hover
     overflow:                   auto;
     padding-top:                50px;
 }
-.asset_summary_container ._title
+.asset_summary_container ._id
 {
     position:                   absolute;
     top:                        20px;
@@ -74,7 +84,9 @@ button:hover
 {
     float:                      left;
     font-weight:                bold;
+    font-size:                  8pt;
     width:                      90px;
+    height:                     12px;
     background-color:           rgb(84, 100, 107);
     padding:                    5px;
     color:                      white;
@@ -93,17 +105,14 @@ button:hover
     border:                     1px solid rgb(84, 100, 107);
     font-size:                  8pt;
 }
-.asset_summary_field ._plus_icon
+
+.asset_summary_buttons
 {
-    font-size:                  12px;
-    color:                      white;
-    #padding:                    5px;
-    margin-right:               3px;
-}
-.asset_summary_field button
-{
-    padding-left:               1px;
-    color:                      black;
+    position:                   relative;
+    top:                        -40px;
+    left:                       -10px;
+    right:                      0px;
+    text-align:                 right;
 }
 
 .notes_container
