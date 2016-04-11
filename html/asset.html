@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Asset</title>
+        <meta name="description" content="An interactive getting started guide for Brackets.">
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <script>
+            $(document).ready(onLoad)
+            
+            function onLoad()
+            {
+                $("#add_new_field").click(handleAddNewField);
+                $(".note").hover(function(){$(".note_buttons").toggleClass("invisible")})
+                
+            }
+            
+            function handleAddNewField()
+            {
+                                
+                var new_field = '<div class="asset_summary_field"><input type="text" class="_key" value="Field"><input type="text" class="_value" value="Value"></div>'
+                $(".asset_summary_container").append(new_field);
+                
+                $("#add_new_field").appendTo($(".asset_summary_container"));
+            }
+
+        </script>
+        
+    </head>
+    <body>
+        <div class="page">
+            
+            <div class="asset_summary_container">
+                <div class="_title">
+                    #234 -234 -134
+                </div>
+                <div class="asset_summary_buttons">
+                    <button><i class="fa fa-upload icon"></i>COMMIT CHANGES</button>
+                </div>
+                
+                <div class="asset_summary_field">
+                    <div class="_key">ID</div><div class="_value">#4874120</div>
+                </div>
+                <div class="asset_summary_field">
+                    <div class="_key">Build Status</div>
+                    <input type="text" class="_value" value="Incomplete" readonly="True">
+                </div>
+                <div class="asset_summary_field">
+                    <input type="text" class="_key" value="Incomplete" readonly="True">
+                    <input type="text" class="_value" value="Incomplete" readonly="True">
+                </div>
+                <div class="asset_summary_field">
+                    <div class="_key">Build Status</div>
+                    <input type="text" class="_value" value="Incomplete" readonly="True">
+                </div>
+                
+                <div id="add_new_field" class="asset_summary_field">
+                    <button>
+                        <i class="fa fa-plus icon"></i>
+                        NEW FIELD
+                    </button>
+                </div>
+          
+            </div> <!-- asset_summary_container -->
+
+            
+            <div class="notes_container" >
+                <div class="note">
+                    <div class="_author">> Richard Morgan</div>
+                    <div class="_date">10:34 03 Aug 2014</div>
+                    <div class="_changelist">
+                        <div class="_item">Build Status Unknown -> Incomplete</div>
+                        <div class="_item">Priority Critical -> Low</div>
+                    </div>
+                    
+                    <div class="note_buttons invisible">
+                        <button>
+                            <i class="fa fa-reply-all icon"></i>
+                            REPLY
+                        </button>
+                    </div>
+                    
+                    <div class="_body">con ipsum dolor amet picanha fatback doner tenderloin meatball, chicken venison. Beef jerky porchetta, brisket tail kevin tongue swine spare ribs pork belly.
+                    </div> <!-- _body -->
+                    
+                    <div class="comment_container">
+                        <div class="comment">
+                            <div class="_author">> Keil Mortimer</div>
+                            <div class="_body">
+                            Beef jerky porchetta, brisket tail kevin tongue swine spare ribs pork belly. Tenderloin landjaeger ham bresaola jerky, swine brisket shank. Porchetta ball tip meatloaf chuck spare ribs picanha turducken, short loin bresaola kielbasa.
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <div class="_author">> Lisa Rebus</div>
+                            <div class="_body">
+                            Beef jerky porchetta, brisket tail kevin tongue swine spare ribs pork belly. Tenderloin landjaeger ham bresaola jerky, swine brisket shank. Porchetta ball tip meatloaf chuck spare ribs picanha turducken, short loin bresaola kielbasa.
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div> <!-- note -->
+                  
+            </div> <!-- notes_container -->
+
+        </div> <!-- page -->        
+    </body>
+</html>
