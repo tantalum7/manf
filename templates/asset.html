@@ -5,22 +5,34 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Asset</title>
-        <meta name="description" content="An interactive getting started guide for Brackets.">
-        <link rel="stylesheet" href="static/main.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <script>
             $(document).ready(onLoad)
 
-            var asset_id = {{ id }}
+            var data = JSON.parse('{{ data | safe }}')
 
             function onLoad()
             {
                 $("#add_new_field").click(handleAddNewField);
                 $(".note").hover(function(){$(".note_buttons").toggleClass("invisible")});
                 $('#commit_changes').click(handleCommitChanges);
+                populateParameters()
+            }
 
+            function populateParameters()
+            {
+                // Iterate through all fields in data array
+                for (var field in data)
+                {
+                    // Check if the field is not private ( _ prefix)
+                    if (field.charAt(0) != "_")
+                    {
+                        // Add a new field to the summary area
+                        addNewField(field, data[field])
+                    }
+                }
             }
 
             function postToServer(data, callback)
@@ -29,25 +41,36 @@
                         url         : "ajax",
                         data        : JSON.stringify(data, null, '\t'),
                         dataType    : 'json',
-                        contentType : 'application/json; charset=utf-8',
-                        success     : callback
+                        contentType : 'application/json; charset=UTF-8',
+                        complete    : callback,
+                        fail        : callback
                         });
             }
 
             function handleAddNewField()
             {
+                addNewField()
+            }
+
+            function addNewField(field="Field", value="Value")
+            {
                                 
-                var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value="Field"><input type="text" class="_value" value="Value"></div>'
+                var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
                 $(".asset_summary_container").append(new_field);
                 
                 $("#add_new_field").appendTo($(".asset_summary_container"));
             }
 
+            function resp(r)
+            {
+                console.log(r);
+            }
+
             function handleCommitChanges()
             {
                 // Prepare data obj, and a keys array inside
-                data = {}
-                data._keys = []
+                post_data = {}
+                post_data._keys = []
                 
                 // Iterate function over all asset summary fields
                 $(".asset_summary_field").each(function(i){
@@ -60,24 +83,26 @@
                         value   = $(this).children("._value").val();
                         
                         // Add key:value to our data dict
-                        data[key] = value;
+                        post_data[key] = value;
 
                         // Append key to the keys list
-                        data._keys.push(key)
+                        post_data._keys.push(key);
                     }
                 })  
                 
                 // Check if data obj is not empty
-                if (data._keys.length > 0)
+                if (post_data._keys.length > 0)
                 {
                     // Add id to the data
-                    data['_id'] = asset_id
+                    post_data['_id'] = data["_id"];
 
                     // Post update to server
-                    postToServer(data, function(r){console.log(r);});
+                    postToServer(post_data, resp);
                 }
             }
-            
+
+
+
         </script>
         
     </head>
@@ -86,26 +111,12 @@
             
             <div class="asset_summary_container">
                 <div class="_id">
-                    # {{ id }}
+                    <script type="text/javascript">document.write(data['_id']);</script>
                 </div>
                 <div class="asset_summary_buttons">
                     <button id="commit_changes"><i class="fa fa-upload icon"></i>COMMIT CHANGES</button>
                 </div>
-                
-                <div class="asset_summary_field" data-modified="True">
-                    <input type="text" class="_key" value="Product Type" readonly="True">
-                    <input type="text" class="_value" value="Software" readonly="True">
-                </div>
-                <div class="asset_summary_field" data-modified="False">
-                    <input type="text" class="_key" value="Prog Lang" readonly="True">
-                    <input type="text" class="_value" value="Python" readonly="True">
-                </div>
-                <div class="asset_summary_field" data-modified="True">
-                    <input type="text" class="_key" value="Status" readonly="True">
-                    <input type="text" class="_value" value="Pending Fixes" readonly="True">
-                </div>
 
-                
                 <div id="add_new_field" class="asset_summary_field">
                     <button>
                         <i class="fa fa-plus icon"></i>

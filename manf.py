@@ -1,12 +1,10 @@
 
 # Library imports
-from flask import Flask
 
-# Project improts
+
+# Project imports
 from database   import Database
 
-flask   = Flask(__name__)
-#manf    = Manf()
 
 class Manf(object):
 
@@ -14,19 +12,3 @@ class Manf(object):
 
         # Init modules
         self.database = Database()
-
-
-@flask.route("/")
-def hello():
-    return "Hello World"
-
-
-
-
-
-if __name__ == "__main__":
-
-
-    manf = Manf()
-
-
