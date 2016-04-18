@@ -1,13 +1,14 @@
 body
 {
     align-items:                 center;
-    font-family:                 sans-serif;
+    font-family:                 monospace;
     font-size:                   8pt;
     background-color:            white;
 }
 
 button
 {
+    font-family:                monospace;
     font-weight:                bold;
     color:                      white;
     background-color:           rgb(84, 100, 107);
@@ -23,6 +24,11 @@ button:hover
     color:                      white;
     background-color:           teal;
     cursor:                     pointer;
+}
+
+input
+{
+    font-family:                monospace;
 }
 
 .icon
@@ -52,7 +58,7 @@ button:hover
 
 .asset_summary_container
 {
-    background-color:           rgb(101, 122, 143);
+    #background-color:           rgb(101, 122, 143);
     padding-bottom:             10px;
     margin-bottom:              10px;           
     #border:                     1px solid black;
@@ -74,7 +80,7 @@ button:hover
 {
     float:                      left;
     margin-left:                10px;
-    margin-top:                 10px;
+    margin-top:                 0px;
     width:                      300px;
     color:                      black;
     #border:                     1px solid black;
@@ -83,28 +89,50 @@ button:hover
 .asset_summary_field ._key
 {
     float:                      left;
-    font-weight:                bold;
+    #font-weight:                bold;
     font-size:                  8pt;
-    width:                      90px;
+    width:                      205px;
     height:                     12px;
-    background-color:           rgb(84, 100, 107);
+    #background-color:           rgb(84, 100, 107);
     padding:                    5px;
-    color:                      white;
-    border:                     1px solid rgb(84, 100, 107);
+    #color:                      white;
+    border-top:                 None;
+    border-left:                None;
+    border-right:               None;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    #text-align:                 right;
     
 }
 .asset_summary_field ._value
 {
     float:                      left;
-    font-weight:                bold;
-    width:                      185px;
+    #font-weight:                bold;
+    width:                      75px;
     height:                     12px;
     background-color:           rgb(255, 255, 255);
     padding:                    5px;
     color:                      black;
-    border:                     1px solid rgb(84, 100, 107);
+    #border:                     1px solid rgb(84, 100, 107);
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
     font-size:                  8pt;
+    text-align:                 right;
 }
+.asset_summary_field ._title
+{
+    #background-color:           rgb(84, 100, 107);
+    padding:                    5px;
+    font-weight:                bold;
+    #color:                      white;
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              1px dotted rgb(84, 100, 107);
+    font-size:                  10pt;
+}
+
 
 .asset_summary_buttons
 {
@@ -195,4 +223,12 @@ button:hover
     float:                      left;
     overflow:                   auto;
     width:                      450px
+}
+
+.category_container
+{
+    float:                      left;
+    background-color:           None;
+    width:                      310px;
+    margin-bottom:              20px;
 }

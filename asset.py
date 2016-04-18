@@ -7,7 +7,14 @@ class AssetDeletedError(Exception):
 class AssetNotFoundError(Exception):
     pass
 
+
+class AssetType(object):
+    PART        = "*PART"
+
+
 class Asset(object):
+
+    PART_ASSET  = "PART"
 
     def __init__(self, db, fields=None, id=None):
         """

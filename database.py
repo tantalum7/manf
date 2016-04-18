@@ -8,13 +8,15 @@ from asset import Asset, AssetNotFoundError
 
 class Database(object):
 
-    def __init__(self):
+    def __init__(self, modules):
 
-        #self.client = MongoClient("45.58.35.135", 80)
+        # Store ref to modules
+        self.modules = modules
+
+        # Create db client object
         self.client = MongoClient("45.58.35.135", 27027)
 
-        print self.client.database_names()
-
+        # Create ref to manf database collection
         self.db = self.client.manf_db
 
     @property
@@ -36,25 +38,28 @@ class Database(object):
         if not data:
             raise AssetNotFoundError()
 
-        return Asset(db=self.asset_collection, id=str(id))
+        return data
 
-    def query(self, field_criteria, limit=1000):
+    def search_asset(self, field_criteria, limit=1000):
 
         cursor = self.asset_collection.find(filter=field_criteria, projection=['_id'], limit=limit)
 
         return [Asset(db=self.asset_collection, id=result['_id']) for result in cursor]
 
+    def query(self, filter=None, projection=None):
+
+        return   self.asset_collection.find(filter      = filter,
+                                            projection  = projection,
+                                            modifiers   = self.modules.settings.db_find_modifiers)
 
 if __name__ == "__main__":
 
+    from part import PartAsset
+    from constants  import Units
     db = Database()
 
-    #db.create_asset({"_id" : 9, "stuff" : "good"})
+    db1 = Database()
 
-    print db.query({'_id' : 50} )
-
-    a1 = db.get_asset(50)
-
-    print a1.get_dict()
+    d = db.get_asset("200")
 
     print "Done"
