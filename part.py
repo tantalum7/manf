@@ -1,5 +1,6 @@
 
 # Library imports
+import  collections
 
 # Project imports
 from asset      import Asset, AssetType
@@ -28,7 +29,7 @@ from asset      import Asset, AssetType
         # MPN
 
 
-class PartAsset(object):
+class Part(Asset):
 
     PHYSICAL        = '@physical'
     COMPLIANCE      = '@compliance'
@@ -40,30 +41,92 @@ class PartAsset(object):
 
     def __init__(self, db, id=None, fields=None):
 
-        # If id and field is None, we are creating a new part from scratch. Prepare fields dict.
-        if id is None and fields is None:
-            fields = { '_type'          : AssetType.PART,
-                       '@physical'      : {},
-                       '@compliance'    : {},
-                       '@electrical'    : {},
-                       '@alternatives'  : {},
-                       '@market'        : {},
-                       '@docs'          : {},
-                       '@part'          : { 'EPN'           : '',
-                                            'STATUS'        : '',
-                                            'DESCRIPTION'   : '',
-                                            'MANUFACTURER'  : '',
-                                            'MPN'           : '',
-                                            'APPROVAL'      : '',
-                                          },
-                     }
+        default = { '_type'          : AssetType.PART,
+                    '@physical'      : {},
+                    '@compliance'    : {},
+                    '@electrical'    : {},
+                    '@alternatives'  : {},
+                    '@market'        : {},
+                    '@docs'          : {},
+                    '@part'          : { 'EPN'           : '',
+                                         'STATUS'        : '',
+                                         'DESCRIPTION'   : '',
+                                         'MANUFACTURER'  : '',
+                                         'MPN'           : '',
+                                         'APPROVAL'      : '',
+                                         'COMPONENT_TYPE': '',
+                                      },
+                 }
 
-        # Init class vars
-        self._asset = Asset(db, fields=fields, id=id)
+        # If a fields dict was passed, update the default dict with it
+        if fields:
+            default = _recursive_dict_update(default, fields)
+
+        # Init parent class
+        Asset.__init__(self, db, fields=default, id=id)
+
+    @property
+    def EPN(self):
+        return self._get_field(self.PART).get('EPN')
+
+    @EPN.setter
+    def EPN(self, a):
+        self._set_field('.'.join([self.PART, 'EPN']), str(a))
+
+    @property
+    def description(self):
+        return self._get_field(self.PART).get('DESCRIPTION')
+
+    @description.setter
+    def description(self, a):
+        self._set_field('.'.join([self.PART, 'DESCRIPTION']), str(a))
+
+    @property
+    def component_type(self):
+        return self._get_field(self.PART).get('COMPONENT_TYPE')
+
+    @component_type.setter
+    def component_type(self, a):
+        self._set_field('.'.join([self.PART, 'COMPONENT_TYPE']), str(a))
+
+    @property
+    def manufacturer(self):
+        return self._get_field(self.PART).get('MANUFACTURER')
+
+    @manufacturer.setter
+    def manufacturer(self, a):
+        self._set_field('.'.join([self.PART, 'MANUFACTURER']), str(a))
+
+    @property
+    def MPN(self):
+        return self._get_field(self.PART).get('MPN')
+
+    @MPN.setter
+    def MPN(self, a):
+        self._set_field('.'.join([self.PART, 'MPN']), str(a))
+
+    @property
+    def approval(self):
+        return self._get_field(self.PART).get('APPROVAL')
+
+    @property
+    def status(self):
+        return self._get_field(self.PART).get('STATUS')
 
     def set_physical_parameter(self, parameter, value, unit=None):
-        self._asset.set_field("@physical."+parameter, (value, unit))
+        self._set_field('.'.join([self.PHYSICAL, parameter]), (value, str(unit)))
 
     def set_electrical_parameter(self, parameter, value, unit=None):
-        self._asset.set_field("@electrical."+parameter, (value, unit))
+        self._set_field("@electrical."+parameter, (value, unit))
 
+
+
+
+def _recursive_dict_update(d, u):
+    for k, v in u.iteritems():
+        if isinstance(v, collections.Mapping):
+            r = _recursive_dict_update(d.get(k, {}), v)
+            d[k] = r
+        else:
+            d[k] = u[k]
+    return d

@@ -1,6 +1,7 @@
 
 # Library imports
 from pymongo    import MongoClient
+from bson       import objectid
 from time       import time
 
 # Project imports
@@ -33,6 +34,8 @@ class Database(object):
 
     def get_asset(self, id):
 
+        id = objectid.ObjectId(str(id))
+
         data = self.asset_collection.find_one(id)
 
         if not data:
@@ -54,12 +57,9 @@ class Database(object):
 
 if __name__ == "__main__":
 
-    from part import PartAsset
+    from part import Part
     from constants  import Units
     db = Database()
 
-    db1 = Database()
-
-    d = db.get_asset("200")
 
     print "Done"

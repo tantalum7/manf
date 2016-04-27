@@ -14,8 +14,6 @@ class AssetType(object):
 
 class Asset(object):
 
-    PART_ASSET  = "PART"
-
     def __init__(self, db, fields=None, id=None):
         """
         Initialiser
@@ -28,19 +26,19 @@ class Asset(object):
         self.db         = db
         self._deleted   = False
 
-        # If fields have been passed, insert them
-        if fields:
-            self.id = self.db.insert_one(fields).inserted_id
-
         # If an ID has been passed, store it in the class
-        elif id:
+        if id:
             self.id = id
+
+        # If fields have been passed, insert them
+        elif fields:
+            self.id = self.db.insert_one(fields).inserted_id
 
         # Without initial fields to create an entry, and no ID for an existing one, we can't create a local asset
         else:
             raise Exception("Asset init needs either fields or an ID.")
 
-    def get_field(self, field):
+    def _get_field(self, field):
         """
         Returns the value of an asset field
 
@@ -61,7 +59,7 @@ class Asset(object):
         # Return the field from the data dict
         return data.get(field)
 
-    def get_fields(self, fields_list):
+    def _get_fields(self, fields_list):
         """
         Returns a dict with field : value for every field in the list argument. Any fields requested
         in the list that do not exist in the asset will have value None in the dictionary.
@@ -86,7 +84,7 @@ class Asset(object):
         # Return a subset dict of asset_data with keys from the fields list
         return dict((field, asset_data.get(field)) for field in fields_list)
 
-    def get_dict(self, filter=None):
+    def _get_dict(self, filter=None):
         """
 
         :param filter:
@@ -109,10 +107,10 @@ class Asset(object):
         # Return dict
         return asset_data
 
-    def get_json(self, filter=None):
+    def _get_json(self, filter=None):
         return json.dumps(self.get_dict(filter))
 
-    def set_field(self, field, value):
+    def _set_field(self, field, value):
 
         if self._deleted:
             raise AssetDeletedError()
@@ -120,7 +118,7 @@ class Asset(object):
         #if field in self.get_fields_list():
         self.db.update_one({"_id" : self.id}, {"$set":{field : value}})
 
-    def get_fields_list(self):
+    def _set_fields_list(self):
         if self._deleted:
             raise AssetDeletedError()
 

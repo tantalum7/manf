@@ -2,7 +2,7 @@
 # Library imports
 
 # Project imports
-from part       import PartAsset
+from part       import Part
 from asset      import Asset, AssetType
 from database   import Database
 
@@ -15,7 +15,7 @@ class Factory(object):
         self.modules = modules
 
     def create_part(self, id=None, fields=None):
-        return PartAsset(self.modules.database.asset_collection, id, fields)
+        return Part(self.modules.database.asset_collection, id, fields)
 
     def create_asset(self, id=None, fields=None):
         return Asset(self.modules.database.asset_collection, id, fields)
