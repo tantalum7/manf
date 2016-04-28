@@ -44,6 +44,7 @@ if __name__ == "__main__":
     #     part.manufacturer   = "ROHM"
     #     part.MPN            = "12345678"
 
+
     all = mani.modules.index.list_all({"_type": "*PART"})
     print "Number of items "+str(len(all))
     for a in all:

@@ -9,7 +9,8 @@ class AssetNotFoundError(Exception):
 
 
 class AssetType(object):
-    PART        = "*PART"
+    PART            = "*PART"
+    BUILD_STANDARD  = "*BOM"
 
 
 class Asset(object):

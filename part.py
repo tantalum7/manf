@@ -4,6 +4,7 @@ import  collections
 
 # Project imports
 from asset      import Asset, AssetType
+from util_funcs import recursive_dict_update
 
  # Physical properties
         # -- Dimms
@@ -60,7 +61,7 @@ class Part(Asset):
 
         # If a fields dict was passed, update the default dict with it
         if fields:
-            default = _recursive_dict_update(default, fields)
+            default = recursive_dict_update(default, fields)
 
         # Init parent class
         Asset.__init__(self, db, fields=default, id=id)
@@ -122,11 +123,3 @@ class Part(Asset):
 
 
 
-def _recursive_dict_update(d, u):
-    for k, v in u.iteritems():
-        if isinstance(v, collections.Mapping):
-            r = _recursive_dict_update(d.get(k, {}), v)
-            d[k] = r
-        else:
-            d[k] = u[k]
-    return d
