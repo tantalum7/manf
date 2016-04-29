@@ -20,10 +20,10 @@ class Modules(object):
 class Manf(object):
 
     def __init__(self):
-
+        ("45.58.35.135", 27027)
         # Init modules
         self.modules            = Modules()
-        self.modules.database   = Database(self.modules)
+        self.modules.database   = Database( ("45.58.35.135", 27027) )
         self.modules.factory    = Factory(self.modules)
         self.modules.index      = Index(self.modules)
         self.modules.settings   = Settings()
@@ -45,13 +45,9 @@ if __name__ == "__main__":
     #     part.MPN            = "12345678"
 
 
-    all = mani.modules.index.list_all({"_type": "*PART"})
-    print "Number of items "+str(len(all))
-    for a in all:
-        #print a['@part']['EPN']
-        part = mani.modules.index.fetch(a['_id'])
-        print part.EPN, part.description
+    #bom = mani.modules.factory.create_build_standard()
 
-        pass
+    part = mani.modules.factory.create_part()
+    part.EPN = "C_10U_16V_X7R_0603"
 
     print "Done"

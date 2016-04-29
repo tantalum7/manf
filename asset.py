@@ -1,6 +1,7 @@
 
 # Library imports
 import json
+import time
 
 class AssetDeletedError(Exception):
     pass
@@ -15,7 +16,7 @@ class AssetType(object):
 
 class Asset(object):
 
-    def __init__(self, db, fields=None, id=None):
+    def __init__(self, modules, fields=None, id=None):
         """
         Initialiser
         :param db:
@@ -23,8 +24,10 @@ class Asset(object):
         :param id:
         :return:
         """
+
         # Init class vars
-        self.db         = db
+        self.modules    = modules
+        self.db         = modules.database
         self._deleted   = False
 
         # If an ID has been passed, store it in the class
@@ -33,7 +36,19 @@ class Asset(object):
 
         # If fields have been passed, insert them
         elif fields:
-            self.id = self.db.insert_one(fields).inserted_id
+
+            # Grab the time
+            t = time.time()
+
+            # Insert meta data into the fields dict
+            fields['@meta'] = {'LAST_MODIFIED_TIME'     : t,
+                               'LAST_MODIFYING_USER'    : 0,
+                               'CREATION_TIME'          : t,
+                               'EDITS_COUNT'            : 0,
+                               }
+
+            # Insert data into database, and grab the ID useed
+            self.id = self.db.insert_one(fields).inserted_ids[0]
 
         # Without initial fields to create an entry, and no ID for an existing one, we can't create a local asset
         else:
@@ -116,14 +131,11 @@ class Asset(object):
         if self._deleted:
             raise AssetDeletedError()
 
-        #if field in self.get_fields_list():
-        self.db.update_one({"_id" : self.id}, {"$set":{field : value}})
-
-    def _set_fields_list(self):
-        if self._deleted:
-            raise AssetDeletedError()
-
-        return self.db.find_one(self.id).keys()
+        self.db.update_one( { "_id"  : self.id },
+                            { "$set" : { field : value, '@meta.LAST_MODIFIED_TIME' : time.time() },
+                              "$inc" : { '@meta.EDITS_COUNT' : 1 }
+                            }
+                          )
 
     def delete(self):
         if self._deleted:

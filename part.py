@@ -40,7 +40,7 @@ class Part(Asset):
     DOCS            = '@docs'
     PART            = '@part'
 
-    def __init__(self, db, id=None, fields=None):
+    def __init__(self, modules, id=None, fields=None):
 
         default = { '_type'          : AssetType.PART,
                     '@physical'      : {},
@@ -64,7 +64,7 @@ class Part(Asset):
             default = recursive_dict_update(default, fields)
 
         # Init parent class
-        Asset.__init__(self, db, fields=default, id=id)
+        Asset.__init__(self, modules, fields=default, id=id)
 
     @property
     def EPN(self):

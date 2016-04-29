@@ -43,6 +43,11 @@ def asset_update():
 
     return "Good"
 
+@server.route("/index")
+def index():
+
+    return str( manf.modules.index.list_all(filter={"_type" : "*PART"}), projection=[] )
+
 if __name__ == "__main__":
 
     server.debug = True
