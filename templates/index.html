@@ -20,17 +20,18 @@
     
     <table>
         <tr>
-            <td>EPN</td>
-            <td>TYPE</td>
-            <td>DESCRIPTION</td>
+            <td width="150"><b>EPN</b></td>
+            <td width="150"><b>TYPE</b></td>
+            <td width="200"><b>DESCRIPTION</b></td>
         </tr>        
         
-        {% for item in items.@part %}    
+        {% for item in items %}    
         <tr>
             <td>{{item.EPN}}</td>
             <td>{{item.COMPONENT_TYPE}}</td>
             <td>{{item.DESCRIPTION}}</td>
         </tr>
+        {% endfor %}
         
     </table>
     

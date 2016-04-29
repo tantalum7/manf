@@ -46,7 +46,12 @@ def asset_update():
 @server.route("/index")
 def index():
 
-    return str( manf.modules.index.list_all(filter={"_type" : "*PART"}), projection=[] )
+    items = manf.modules.index.list_all(filter={"_type" : "*PART"}, projection=['@part.EPN' ,'@part.COMPONENT_TYPE', '@part.DESCRIPTION'] )
+
+    items = [item['@part'] for item in items]
+
+
+    return render_template('index.html', items=items)
 
 if __name__ == "__main__":
 
