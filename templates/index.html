@@ -1,1 +1,39 @@
-stuff
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Part</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="../static/main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <script>
+
+            
+        </script>
+        
+    </head>
+    
+<body>
+    
+    <table>
+        <tr>
+            <td width="150"><b>EPN</b></td>
+            <td width="150"><b>TYPE</b></td>
+            <td width="200"><b>DESCRIPTION</b></td>
+        </tr>        
+        
+        {% for item in items %}    
+        <tr>
+            <td>{{item.EPN}}</td>
+            <td>{{item.COMPONENT_TYPE}}</td>
+            <td>{{item.DESCRIPTION}}</td>
+        </tr>
+        {% endfor %}
+        
+    </table>
+    
+    
+</body>

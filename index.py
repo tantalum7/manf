@@ -15,6 +15,6 @@ class Index(object):
     def search(self, query):
         pass
 
-    def list_all(self, filter=None):
-        results = self.modules.database.query(filter=filter)
+    def list_all(self, filter=None, projection=None):
+        results = self.modules.database.query(filter=filter, projection=projection)
         return [value for value in results]

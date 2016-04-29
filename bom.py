@@ -6,6 +6,7 @@ import csv
 from asset      import Asset, AssetType
 from util_funcs import recursive_dict_update
 
+
 def _CsvReaderHelper(csv_data):
 
     class _dialect(csv.Dialect):
@@ -20,13 +21,14 @@ def _CsvReaderHelper(csv_data):
 
     return csv.reader(csv_data, dialect=_dialect())
 
+
 class BuildStandard(Asset):
 
-    CSV_COL_REF         = ["REF", "Reference", "REFERENCE", "Ref"]
-    CSV_COL_VALUE       = ["VAL", "Value", "VALUE", "Val"]
-    CSV_COL_FOOTPRINT   = ["FP", "Footprint", "FOOTPRINT"]
-    CSV_COL_EPN         = ["EPN", "epn", "Engineering Part Number"]
-    CSV_COL_DNF         = ["DNF", "dnf", "DO NOT FIT", "Do not fit"]
+    _CSV_COL_REF        = ["REF", "Reference", "REFERENCE", "Ref"]
+    _CSV_COL_VALUE      = ["VAL", "Value", "VALUE", "Val"]
+    _CSV_COL_FOOTPRINT  = ["FP", "Footprint", "FOOTPRINT"]
+    _CSV_COL_EPN        = ["EPN", "epn", "Engineering Part Number"]
+    _CSV_COL_DNF        = ["DNF", "dnf", "DO NOT FIT", "Do not fit"]
 
     def __init__(self, db, id=None, fields=None):
         pass
@@ -60,8 +62,8 @@ class BuildStandard(Asset):
         columns = csv_reader.next()
 
         # Prepare list of column headings we are looking for (list of list of spelling variants)
-        col_headings_list = [ self.CSV_COL_REF, self.CSV_COL_VALUE, self.CSV_COL_EPN,
-                              self.CSV_COL_FOOTPRINT, self.CSV_COL_DNF ]
+        col_headings_list = [self._CSV_COL_REF, self._CSV_COL_VALUE, self._CSV_COL_EPN,
+                             self._CSV_COL_FOOTPRINT, self._CSV_COL_DNF]
 
         # Prepare dict to store the index location of the headings
         col_index_dict = {}
