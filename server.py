@@ -66,6 +66,25 @@ def bom(name):
 
         return rtn_string + "</table>"
 
+@server.route("/bom/index")
+def bom_index():
+
+    results = manf.database.find_many(filter={"_type":"*BOM"}, projection=["@bom"])
+
+    html_string = ""
+
+
+    if results:
+
+        for bom in results:
+
+            html_string += "{} : {}<br>".format(bom['@bom']['NAME'], bom['@bom']['DESCRIPTION'])
+
+    else:
+        html_string = "Narda"
+
+    return html_string
+
 @server.route("/asset/ajax", methods=['PUT', 'POST'])
 def asset_update():
     data = request.get_json()

@@ -43,8 +43,8 @@ if __name__ == "__main__":
 
     bom = mani.factory.create_build_standard()
 
-    bom.name        = "TEST_BOM"
-    bom.revision    = "1.0.1"
+    bom.name        = "ANOTHER_TEST_BOM"
+    bom.revision    = "4.2"
 
     csv_str = """Reference, Value, Footprint,EPN
     U1,XC9103,TO_SOT_Packages_SMD:SOT-23-5,XC9103_SOT23-5

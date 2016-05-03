@@ -56,6 +56,94 @@ input
     display:                    None;
 }
 
+
+.part_summary
+{
+    #background-color:           rgb(101, 122, 143);
+    padding-bottom:             10px;
+    margin-bottom:              10px;           
+    #border:                     1px solid black;
+    overflow:                   auto;
+    padding-top:                50px;
+}
+.part_summary ._title
+{
+    font-weight:                bold;
+    background-color:           rgb(84, 100, 107) !important;
+    color:                      white !important;
+    padding:                    5px;
+    letter-spacing:             2px;
+}
+.part_summary ._thumbnail_pic
+{
+    float:                      left;
+    background-color:           None;
+    width:                      210px;
+    margin-bottom:              20px;   
+}
+.part_summary ._category_container
+{
+    float:                      left;
+    background-color:           None;
+    width:                      420px;
+    margin-bottom:              20px;
+}
+.part_summary ._field_container
+{
+    float:                      left;
+    margin-left:                10px;
+    margin-top:                 3px;
+    width:                      390px;
+    color:                      black;
+    background-color:           rgb(210, 216, 217);
+    #border:                     1px solid black;
+    padding:                    5px;
+}
+.part_summary ._key
+{
+    float:                      left;
+    #font-weight:                bold;
+    font-size:                  8pt;
+    width:                      130px;
+    height:                     12px;
+    background-color:           rgb(210, 216, 217);
+    #padding-top:                5px;
+    #padding-bottom:             5px;
+    #padding-left:               0px;
+    #padding-right:              5px;
+    #color:                      white;
+    border-top:                 None;
+    border-left:                None;
+    border-right:               None;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    #text-align:                 right;
+}
+.part_summary ._value
+{
+    float:                      left;
+    #font-weight:                bold;
+    width:                      260px;
+    height:                     12px;
+    background-color:           rgb(210, 216, 217);
+    #padding:                    5px;
+    color:                      black;
+    #border:                     1px solid rgb(84, 100, 107);
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    font-size:                  8pt;
+    text-align:                 right;
+}
+
+
+
+
+
+
+
+
+
 .asset_summary_container
 {
     #background-color:           rgb(101, 122, 143);
@@ -70,7 +158,7 @@ input
     position:                   absolute;
     top:                        20px;
     font-weight:                bold;
-    background-color:           rgb(84, 100, 107);
+    #background-color:           rgb(84, 100, 107);
     padding:                    5px;
     color:                      rgb(230, 230, 230);
     font-size:                  14pt;
@@ -80,9 +168,10 @@ input
 {
     float:                      left;
     margin-left:                10px;
-    margin-top:                 0px;
+    margin-top:                 3px;
     width:                      300px;
     color:                      black;
+    background-color:           rgb(210, 216, 217);
     #border:                     1px solid black;
     #padding:                    5px;
 }
@@ -93,7 +182,7 @@ input
     font-size:                  8pt;
     width:                      205px;
     height:                     12px;
-    #background-color:           rgb(84, 100, 107);
+    background-color:           rgb(210, 216, 217);
     padding:                    5px;
     #color:                      white;
     border-top:                 None;
@@ -109,7 +198,7 @@ input
     #font-weight:                bold;
     width:                      75px;
     height:                     12px;
-    background-color:           rgb(255, 255, 255);
+    background-color:           rgb(210, 216, 217);
     padding:                    5px;
     color:                      black;
     #border:                     1px solid rgb(84, 100, 107);
@@ -122,14 +211,14 @@ input
 }
 .asset_summary_field ._title
 {
-    #background-color:           rgb(84, 100, 107);
+    background-color:           rgb(84, 100, 107);
     padding:                    5px;
     font-weight:                bold;
-    #color:                      white;
-    border-top:                 None;
-    border-left:                None;
-    border-right:               none;
-    border-bottom:              1px dotted rgb(84, 100, 107);
+    color:                      white;
+    #border-top:                 None;
+    #border-left:                None;
+    #border-right:               none;
+    #border-bottom:              1px dotted rgb(84, 100, 107);
     font-size:                  10pt;
 }
 
@@ -225,7 +314,7 @@ input
     width:                      450px
 }
 
-.category_container
+.123category_container
 {
     float:                      left;
     background-color:           None;

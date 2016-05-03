@@ -72,9 +72,9 @@ class SearchResult(object):
 
     def __len__(self):
         return self._pymongo_cursor.count()
-
-    def __iter__(self):
-        return self._pymongo_cursor.iter()
+    #
+    # def __iter__(self):
+    #     return self._pymongo_cursor.next()
 
     def __nonzero__(self):
         return bool( self.__len__() )
