@@ -136,6 +136,8 @@ class Database(object):
         return OperationResult(success  = mongo_result.acknowledged,
                                op_count = mongo_result.deleted_count)
 
+    def id(self, id_string):
+        return id_string if isinstance(id_string, objectid.ObjectId) else objectid.ObjectId(id_string)
 
 if __name__ == "__main__":
 

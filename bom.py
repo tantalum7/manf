@@ -80,6 +80,10 @@ class BuildStandard(Asset):
     def revision(self, a):
         self._set_field('.'.join([self._FIELD_BOM, 'REVISION']), str(a))
 
+    @property
+    def data(self):
+        return self._get_field(self._FIELD_DATA).get("variant_zero")
+
     def process_csv(self, csv_string):
 
         # Parse the csv into a dict

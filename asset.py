@@ -32,7 +32,7 @@ class Asset(object):
 
         # If an ID has been passed, store it in the class
         if id:
-            self.id = id
+            self.id = self.db.id(id)
 
         # If fields have been passed, insert them
         elif fields:
@@ -48,7 +48,7 @@ class Asset(object):
                                }
 
             # Insert data into database, and grab the ID useed
-            self.id = self.db.insert_one(fields).inserted_ids[0]
+            self.id = self.db.id( self.db.insert_one(fields).inserted_ids[0] )
 
         # Without initial fields to create an entry, and no ID for an existing one, we can't create a local asset
         else:
@@ -66,7 +66,7 @@ class Asset(object):
             raise AssetDeletedError()
 
         # Grab asset data from db
-        data = self.db.find_one(self.id)
+        data = self.db.find_one({'_id' : self.id})
 
         # If no valid data found, throw an exception
         if not data:
@@ -88,7 +88,7 @@ class Asset(object):
             raise AssetDeletedError()
 
         # Grab asset data from db
-        asset_data = self.db.find_one(self.id)
+        asset_data = self.db.find_one({'_id' : self.db.id(id)})
 
         # If the asset cannot be found, throw an exception
         if not asset_data:

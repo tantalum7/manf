@@ -36,6 +36,19 @@ class Factory(object):
         else:
             raise self._app.NotFoundError()
 
+    def fetch_bom(self, name):
+
+        # Search database for BoM name
+        bom_dict = self._app.database.find_one(filter={'@bom.NAME' : name})
+
+        # If we received a valid result dict, create and return a BoM object
+        if bom_dict:
+            return self.create_build_standard(id=bom_dict['_id'])
+
+        # Could not find a part with the EPN, raise an exception
+        else:
+            raise self._app.NotFoundError()
+
     def _parse_database_dict(self, database_dict):
 
         if database_dict.get("_type") == AssetType.PART:

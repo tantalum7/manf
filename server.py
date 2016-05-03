@@ -13,8 +13,7 @@ manf   = Manf()
 def hello():
     return "Hello World"
 
-@server.route("/part")
-@server.route("/part/<epn>")
+@server.route("/part/epn/<epn>")
 def part(epn):
 
     try:
@@ -29,6 +28,43 @@ def part(epn):
     else:
         return render_template( 'asset.html', data=part.get_json() )
 
+
+@server.route("/part/new")
+def new_part():
+    return "Make a new part"
+
+@server.route("/bom/name/<name>")
+def bom(name):
+
+    try:
+        bom = manf.factory.fetch_bom(name)
+
+    except manf.NotFoundError:
+        return "Cannot find bom "+str(name)
+
+    except:
+        raise
+
+    else:
+        rtn_string = """<table border="1px">
+                          <tr><td>NAME</td><td>{}</td></tr>
+                          <tr><td>DESCRIPTION</td><td>{}</td></tr>
+                          <tr><td>REVISION</td><td>{}</td></tr>
+                          <tr><td>ID</td><td>{}</td></tr>
+                          <tr><td> </td></tr>
+                          <tr><td> </td></tr>
+                          <tr><td> </td></tr>
+                          <tr><td>REF</td><td>VALUE</td><td>EPN</td><td>MANUFACTURER</td><td>MPN</td>
+                    """.format(bom.name, bom.description, bom.revision, bom.id)
+
+        data = bom.data
+
+        if data:
+            for item in data:
+                part = manf.factory.create_part(id=item['DB_ID'])
+                rtn_string += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(item['REF'], item['VALUE'], part.EPN, part.manufacturer, part.MPN)
+
+        return rtn_string + "</table>"
 
 @server.route("/asset/ajax", methods=['PUT', 'POST'])
 def asset_update():
