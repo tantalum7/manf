@@ -9,24 +9,18 @@ from index          import Index
 from settings       import Settings
 
 
-class Modules(object):
-    database    = None
-    factory     = None
-    server      = None
-    settings    = None
-    index       = None
-
-
 class Manf(object):
 
+    class NotFoundError(Exception):
+        pass
+
     def __init__(self):
-        ("45.58.35.135", 27027)
-        # Init modules
-        self.modules            = Modules()
-        self.modules.database   = Database( ("45.58.35.135", 27027) )
-        self.modules.factory    = Factory(self.modules)
-        self.modules.index      = Index(self.modules)
-        self.modules.settings   = Settings()
+
+        # Init class vars
+        self.database   = Database( ("45.58.35.135", 27027) )
+        self.factory    = Factory(self)
+        self.index      = Index(self)
+        self.settings   = Settings()
 
 
 if __name__ == "__main__":
@@ -47,7 +41,19 @@ if __name__ == "__main__":
 
     #bom = mani.modules.factory.create_build_standard()
 
-    part = mani.modules.factory.create_part()
-    part.EPN = "C_10U_16V_X7R_0603"
+    bom = mani.factory.create_build_standard()
+
+    bom.name        = "TEST_BOM"
+    bom.revision    = "1.0.1"
+
+    csv_str = """Reference, Value, Footprint,EPN
+    U1,XC9103,TO_SOT_Packages_SMD:SOT-23-5,XC9103_SOT23-5
+    D1,MBR230LSFT1G,Diodes_SMD:SOD-123,MBR230LSFT1G_SOD123
+    L1,10u,dong:5X5X4_BOURNS_INDUCTOR,IND_10U_2A_5X5
+    R1,3K3,Resistors_SMD:R_0402,R_3K3_0402
+    R3,10K,Resistors_SMD:R_0402,R_10K_0402
+    R2,10K,Resistors_SMD:R_0402,R_10K_0402"""
+
+    bom.process_csv(csv_str)
 
     print "Done"

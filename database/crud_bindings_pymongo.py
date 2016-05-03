@@ -109,7 +109,7 @@ class Database(object):
                                op_count = mongo_result.modified_count)
 
     def find_one(self, filter=None, projection=None, sort=None):
-        return SearchResult( self.db.update_one(filter=filter, projection=projection, sort=sort) )
+        return self.db.find_one(filter=filter, projection=projection, sort=sort)
 
     def find_many(self, filter=None, projection=None, limit=0, sort=None):
         return SearchResult( self.db.find(filter=filter, projection=projection, limit=limit, sort=sort) )

@@ -16,7 +16,7 @@ class AssetType(object):
 
 class Asset(object):
 
-    def __init__(self, modules, fields=None, id=None):
+    def __init__(self, app, fields=None, id=None):
         """
         Initialiser
         :param db:
@@ -26,8 +26,8 @@ class Asset(object):
         """
 
         # Init class vars
-        self.modules    = modules
-        self.db         = modules.database
+        self.app        = app
+        self.db         = app.database
         self._deleted   = False
 
         # If an ID has been passed, store it in the class
@@ -100,7 +100,7 @@ class Asset(object):
         # Return a subset dict of asset_data with keys from the fields list
         return dict((field, asset_data.get(field)) for field in fields_list)
 
-    def _get_dict(self, filter=None):
+    def get_dict(self, filter=None):
         """
 
         :param filter:
@@ -120,10 +120,13 @@ class Asset(object):
         if not asset_data:
             raise
 
+        # Force the id parameter to be a string
+        asset_data['_id'] = str(asset_data['_id'])
+
         # Return dict
         return asset_data
 
-    def _get_json(self, filter=None):
+    def get_json(self, filter=None):
         return json.dumps(self.get_dict(filter))
 
     def _set_field(self, field, value):

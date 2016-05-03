@@ -13,22 +13,22 @@ manf   = Manf()
 def hello():
     return "Hello World"
 
-@server.route("/asset")
-@server.route("/asset/<id>")
-def asset(id):
+@server.route("/part")
+@server.route("/part/<epn>")
+def part(epn):
 
     try:
-        asset = manf.database.get_asset(id)
+        part = manf.factory.fetch_part(epn)
 
-    except AssetNotFoundError:
-        asset = manf.database.create_asset({"_id" : id})
+    except manf.NotFoundError:
+        return "Cannot find part "+str(epn)
 
     except:
         raise
 
-    d = asset.get_json()
+    else:
+        return render_template( 'asset.html', data=part.get_json() )
 
-    return render_template('asset.html', data=asset.get_json())
 
 @server.route("/asset/ajax", methods=['PUT', 'POST'])
 def asset_update():

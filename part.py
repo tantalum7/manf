@@ -32,13 +32,13 @@ from util_funcs import recursive_dict_update
 
 class Part(Asset):
 
-    PHYSICAL        = '@physical'
-    COMPLIANCE      = '@compliance'
-    ELECTRICAL      = '@electrical'
-    ALTERNATIVES    = '@alternatives'
-    MARKET          = '@market'
-    DOCS            = '@docs'
-    PART            = '@part'
+    _FIELD_PHYSICAL         = '@physical'
+    _FIELD_COMPLIANCE       = '@compliance'
+    _FIELD_ELECTRICAL       = '@electrical'
+    _FIELD_ALTERNATIVES     = '@alternatives'
+    _FIELD_MARKET           = '@market'
+    _FIELD_DOCS             = '@docs'
+    _FIELD_PART             = '@part'
 
     def __init__(self, modules, id=None, fields=None):
 
@@ -68,54 +68,54 @@ class Part(Asset):
 
     @property
     def EPN(self):
-        return self._get_field(self.PART).get('EPN')
+        return self._get_field(self._FIELD_PART).get('EPN')
 
     @EPN.setter
     def EPN(self, a):
-        self._set_field('.'.join([self.PART, 'EPN']), str(a))
+        self._set_field('.'.join([self._FIELD_PART, 'EPN']), str(a))
 
     @property
     def description(self):
-        return self._get_field(self.PART).get('DESCRIPTION')
+        return self._get_field(self._FIELD_PART).get('DESCRIPTION')
 
     @description.setter
     def description(self, a):
-        self._set_field('.'.join([self.PART, 'DESCRIPTION']), str(a))
+        self._set_field('.'.join([self._FIELD_PART, 'DESCRIPTION']), str(a))
 
     @property
     def component_type(self):
-        return self._get_field(self.PART).get('COMPONENT_TYPE')
+        return self._get_field(self._FIELD_PART).get('COMPONENT_TYPE')
 
     @component_type.setter
     def component_type(self, a):
-        self._set_field('.'.join([self.PART, 'COMPONENT_TYPE']), str(a))
+        self._set_field('.'.join([self._FIELD_PART, 'COMPONENT_TYPE']), str(a))
 
     @property
     def manufacturer(self):
-        return self._get_field(self.PART).get('MANUFACTURER')
+        return self._get_field(self._FIELD_PART).get('MANUFACTURER')
 
     @manufacturer.setter
     def manufacturer(self, a):
-        self._set_field('.'.join([self.PART, 'MANUFACTURER']), str(a))
+        self._set_field('.'.join([self._FIELD_PART, 'MANUFACTURER']), str(a))
 
     @property
     def MPN(self):
-        return self._get_field(self.PART).get('MPN')
+        return self._get_field(self._FIELD_PART).get('MPN')
 
     @MPN.setter
     def MPN(self, a):
-        self._set_field('.'.join([self.PART, 'MPN']), str(a))
+        self._set_field('.'.join([self._FIELD_PART, 'MPN']), str(a))
 
     @property
     def approval(self):
-        return self._get_field(self.PART).get('APPROVAL')
+        return self._get_field(self._FIELD_PART).get('APPROVAL')
 
     @property
     def status(self):
-        return self._get_field(self.PART).get('STATUS')
+        return self._get_field(self._FIELD_PART).get('STATUS')
 
     def set_physical_parameter(self, parameter, value, unit=None):
-        self._set_field('.'.join([self.PHYSICAL, parameter]), (value, str(unit)))
+        self._set_field('.'.join([self._FIELD_PHYSICAL, parameter]), (value, str(unit)))
 
     def set_electrical_parameter(self, parameter, value, unit=None):
         self._set_field("@electrical."+parameter, (value, unit))
