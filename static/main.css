@@ -3,7 +3,7 @@ body
     align-items:                 center;
     font-family:                 monospace;
     font-size:                   8pt;
-    background-color:            white;
+    background-color:            rgb(240, 240, 240);
 }
 
 button
@@ -41,14 +41,32 @@ input
 
 .page
 {
-    width:                      630px;
+    position:                   relative;
+    width:                      632px;
     align-self:                 center;
-    margin-top:                 10px;
+    margin-top:                 0px;
     margin-left:                auto;
     margin-right:               auto;
     margin-bottom:              0px;
-    #background-color:           rgb(240, 240, 240);
+    background-color:           white;
     padding:                    10px;
+    border:                     1px solid rgb(200, 200, 200);
+}
+
+.manf_logo
+{
+    font-weight:                bold;
+    font-size:                  19pt;
+    background-color:           rgb(84, 100, 107);
+    color:                      white;
+    padding:                    2px 5px 5px 5px;
+}
+
+.top_nav
+{
+    position:                   absolute;
+    right:                      10px;
+    top:                        10px;
 }
 
 .invisible
@@ -57,56 +75,26 @@ input
 }
 
 
-.part_summary
+._field_container
 {
-    #background-color:           rgb(101, 122, 143);
-    padding-bottom:             10px;
-    margin-bottom:              10px;           
+    color:                      black;
+    #background-color:           rgb(210, 216, 217);
     #border:                     1px solid black;
-    overflow:                   auto;
-    padding-top:                50px;
-}
-.part_summary ._title
-{
-    font-weight:                bold;
-    background-color:           rgb(84, 100, 107) !important;
-    color:                      white !important;
-    padding:                    5px;
-    letter-spacing:             2px;
-}
-.part_summary ._thumbnail_pic
-{
-    float:                      left;
-    background-color:           None;
-    width:                      210px;
-    margin-bottom:              20px;   
-}
-.part_summary ._category_container
-{
-    float:                      left;
-    background-color:           None;
-    width:                      420px;
-    margin-bottom:              20px;
-}
-.part_summary ._field_container
-{
+    padding:                    5px; 
     float:                      left;
     margin-left:                10px;
-    margin-top:                 3px;
-    width:                      390px;
-    color:                      black;
-    background-color:           rgb(210, 216, 217);
-    #border:                     1px solid black;
-    padding:                    5px;
+    margin-top:                 0px;
+    margin-bottom:              -5px;
 }
-.part_summary ._key
+
+._key
 {
     float:                      left;
     #font-weight:                bold;
     font-size:                  8pt;
-    width:                      130px;
+    width:                      120px;
     height:                     12px;
-    background-color:           rgb(210, 216, 217);
+    #background-color:           rgb(210, 216, 217);
     #padding-top:                5px;
     #padding-bottom:             5px;
     #padding-left:               0px;
@@ -118,13 +106,40 @@ input
     border-bottom:              None;#1px dotted rgb(84, 100, 107);
     #text-align:                 right;
 }
-.part_summary ._value
+._value
 {
     float:                      left;
     #font-weight:                bold;
-    width:                      260px;
+    width:                      270px;
     height:                     12px;
-    background-color:           rgb(210, 216, 217);
+    #background-color:           rgb(210, 216, 217);
+    #padding:                    5px;
+    color:                      black;
+    #border:                     1px solid rgb(84, 100, 107);
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    font-size:                  8pt;
+    text-align:                 right;
+}
+._title
+{
+    font-weight:                bold;
+    #background-color:           rgb(84, 100, 107) !important;
+    color:                      white !important;
+    padding:                    5px;
+    letter-spacing:             2px;
+    float:                      left;
+    
+}
+._unit
+{
+    float:                      left;
+    #font-weight:                bold;
+    width:                      20px;
+    height:                     12px;
+    #background-color:           rgb(210, 216, 217);
     #padding:                    5px;
     color:                      black;
     #border:                     1px solid rgb(84, 100, 107);
@@ -136,11 +151,83 @@ input
     text-align:                 right;
 }
 
+.part_summary
+{
+    #background-color:           rgb(101, 122, 143);
+    padding-bottom:             10px;
+    margin-bottom:              10px; 
+    margin-top:                 15px;
+    #border:                     1px solid black;
+    overflow:                   auto;
+    padding-top:                10px;
+    border:                     1px solid black;
+}
+
+.part_summary ._thumbnail_pic
+{
+    float:                      left;
+    background-color:           None;
+    width:                      200px;
+    margin-left:                10px;   
+}
+.part_summary ._category_container
+{
+    float:                      left;
+    background-color:           None;
+    width:                      420px;
+    margin-bottom:              20px;
+}
 
 
 
+.part_summary ._field_container
+{
+    width:                      390px;
+}
+.part_summary ._key
+{
+    width:                      120px;
+}
+.part_summary ._value
+{
+    width:                      270px;
+}
 
-
+.data_tabs
+{
+    padding-bottom:             10px;
+    margin-bottom:              50px;           
+    overflow:                   auto;   
+    border:                     1px solid black;
+    padding:                    10px
+}
+.data_tabs ._menu
+{
+    position:                   relative;
+    width:                      610px;
+    margin-bottom:              30px;
+    
+}
+.data_tabs ._menu ._item
+{
+    float:                      left;
+    font-weight:                bold;
+    background-color:           rgb(84, 100, 107);
+    color:                      white !important;
+    padding:                    5px;
+    letter-spacing:             2px;
+    margin-right:               3px;
+}
+.data_tabs ._menu ._item:hover
+{
+    background-color:           rgb(84, 100, 20) !important;
+    cursor:                     pointer;
+}
+.data_tabs ._field_container
+{
+    width:                      390px;
+    margin-left:                0px;
+}
 
 
 

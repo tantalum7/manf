@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Part</title>
+        
+        <link rel="stylesheet" href="../static/main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <script>
+            $(document).ready(onLoad)
+
+            function onLoad()
+            {
+                $(".data_tabs").tabs();
+            }
+
+            function populateParameters()
+            {
+                // Iterate through all fields in data array
+                for (var field in data)
+                {
+                    // Check if the field is not private ( _ prefix)
+                    if (field.charAt(0) != "_")
+                    {
+                        // Add a new field to the summary area
+                        addNewField(field, data[field])
+                    }
+                }
+            }
+
+            function postToServer(data, callback)
+            {
+                $.ajax({type        : "PUT",
+                        url         : "ajax",
+                        data        : JSON.stringify(data, null, '\t'),
+                        dataType    : 'json',
+                        contentType : 'application/json; charset=UTF-8',
+                        complete    : callback,
+                        fail        : callback
+                        });
+            }
+
+            function handleAddNewField()
+            {
+                addNewField()
+            }
+
+            function addNewField(field="Field", value="Value")
+            {
+                                
+                var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
+                $(".asset_summary_container").append(new_field);
+                
+                $("#add_new_field").appendTo($(".asset_summary_container"));
+            }
+
+            function resp(r)
+            {
+                console.log(r);
+            }
+
+            function handleCommitChanges()
+            {
+                // Prepare data obj, and a keys array inside
+                post_data = {}
+                post_data._keys = []
+                
+                // Iterate function over all asset summary fields
+                $(".asset_summary_field").each(function(i){
+                                        
+                    // Check if the summary field has been modified
+                    if( $(this).data("modified") == "True" )
+                    {
+                        // Grab key, value from div
+                        key     = $(this).children("._key").val();
+                        value   = $(this).children("._value").val();
+                        
+                        // Add key:value to our data dict
+                        post_data[key] = value;
+
+                        // Append key to the keys list
+                        post_data._keys.push(key);
+                    }
+                })  
+                
+                // Check if data obj is not empty
+                if (post_data._keys.length > 0)
+                {
+                    // Add id to the data
+                    post_data['_id'] = data["_id"];
+
+                    // Post update to server
+                    postToServer(post_data, resp);
+                }
+            }
+
+
+
+        </script>
+        
+    </head>
+    <body>
+        
+        <div class="page">
+            <dif class="manf_logo">[manf]</dif>
+            <div class="top_nav">parts boms </div>        
+                <div class="part_summary">
+                    
+                    <img class="_thumbnail_pic"  src="../cap.jpg">
+            
+                    <div class="_category_container">
+                        <div class="_field_container _title" data modified="True">
+                            PART
+                        </div>
+
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='EPN'>
+                            <input type="text" class="_value" value='C_100N_X5R_16V_0603'>
+                        </div>
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='Description'>
+                            <input type="text" class="_value" value='Surface mount MLCC'>
+                        </div>
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='Manufacturer'>
+                            <input type="text" class="_value" value='Vishay'>
+                        </div>
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='MPN'>
+                            <input type="text" class="_value" value='GMMBRA1608-34'>
+                        </div>
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='Approval'>
+                            <input type="text" class="_value" value='Pending Review'>
+                        </div>
+                    </div>
+                </div>
+            
+            <div class="data_tabs" >
+                <div class="_menu">
+                    <div class="_item">
+                        SPECFICATIONS
+                    </div>
+                    <div class="_item">
+                        COMPLIANCE
+                    </div>
+                    <div class="_item">
+                        DOCUMENTS
+                    </div>
+                    <div class="_item">
+                        ALTERNATIVES
+                    </div>
+                    <div class="_item">
+                        MARKET DATA
+                    </div>
+                </div>
+                
+                  
+            <div class="_category_container">
+                <div class="_field_container _title" data modified="True">
+                    PART
+                </div>
+
+                <div class="_field_container" data modified="True">
+                    <input type="text" class="_key" value='EPN'>
+                    <input type="text" class="_value" value='C_100N_X5R_16V_0603'>
+                    <input type="text" class="_unit" value='uF'>
+                </div>
+                <div class="_field_container" data modified="True">
+                    <input type="text" class="_key" value='Description'>
+                    <input type="text" class="_value" value='Surface mount MLCC'>
+                    <input type="text" class="_unit" value='uF'>
+                </div>
+                <div class="_field_container" data modified="True">
+                    <input type="text" class="_key" value='Manufacturer'>
+                    <input type="text" class="_value" value='Vishay'>
+                    <input type="text" class="_unit" value='uF'>
+                </div>
+                <div class="_field_container" data modified="True">
+                    <input type="text" class="_key" value='MPN'>
+                    <input type="text" class="_value" value='GMMBRA1608-34'>
+                    <input type="text" class="_unit" value='uF'>
+                </div>
+                <div class="_field_container" data modified="True">
+                    <input type="text" class="_key" value='Approval'>
+                    <input type="text" class="_value" value='Pending Review'>
+                    <input type="text" class="_unit" value='uF'>
+                </div>
+            </div>
+                
+                
+            </div> <!-- data_tabs -->
+
+        </div> <!-- page -->        
+    </body>
+</html>
