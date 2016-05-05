@@ -137,7 +137,7 @@ input
 {
     float:                      left;
     #font-weight:                bold;
-    width:                      20px;
+    width:                      50px;
     height:                     12px;
     #background-color:           rgb(210, 216, 217);
     #padding:                    5px;
@@ -148,7 +148,8 @@ input
     border-right:               none;
     border-bottom:              None;#1px dotted rgb(84, 100, 107);
     font-size:                  8pt;
-    text-align:                 right;
+    text-align:                 left;
+    margin-left:                5px;
 }
 
 .part_summary
@@ -205,8 +206,7 @@ input
 {
     position:                   relative;
     width:                      610px;
-    margin-bottom:              30px;
-    
+    margin-bottom:              30px; 
 }
 .data_tabs ._menu ._item
 {
@@ -225,7 +225,7 @@ input
 }
 .data_tabs ._field_container
 {
-    width:                      390px;
+    width:                      445px;
     margin-left:                0px;
 }
 
