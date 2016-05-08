@@ -45,7 +45,8 @@ def part(epn):
         raise
 
     else:
-        return render_template( 'asset.html', data=part.get_json() )
+        obj = part.get_dict()
+        return render_template( 'part.html', data=part.get_json(), data_obj=part.get_dict() )
 
 @server.route("/part/new")
 def new_part():

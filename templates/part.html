@@ -7,21 +7,44 @@
         <title>Part</title>
         
         <link rel="stylesheet" href="../static/main.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <script>
-            $(document).ready(onLoad)
-
+            
+            var json_data = JSON.parse('{{ data | safe }}');
+            
+            console.log(" {{ data_obj['@part']['EPN']}} ");
+            
+            $(document).ready(onLoad);
+            
+            
+            
             function onLoad()
-            {
-                $(".data_tabs").tabs();
+            {                
+                console.log(json_data);
+                populateParameters();
+                $("._value").change( function(){$(this).addClass("edited");})
             }
 
             function populateParameters()
             {
-                // Iterate through all fields in data array
-                for (var field in data)
+                /*
+                // Populate part summary fields
+                $('#EPN_VALUE').val(  json_data['@part']['EPN']);
+                $('#DESCRIPTION_VALUE').val(json_data['@part']['DESCRIPTION']);
+                $('#ID_VALUE').val(json_data['_id']);
+                $('#MANUFACTURER_VALUE').val(json_data['@part']['MANUFACTURER']);
+                $('#MPN_VALUE').val(json_data['@part']['MPN']);
+                $('#APPROVAL_VALUE').val(json_data['@part']['APPROVAL']);
+                */
+                
+                /*
+                // Iterate through all fields in electrical specs
+                for (var item in data['@electrical'])
                 {
+                    var $div = $("<div>", {class="data_tabs _category_container"});
+                    
                     // Check if the field is not private ( _ prefix)
                     if (field.charAt(0) != "_")
                     {
@@ -29,6 +52,7 @@
                         addNewField(field, data[field])
                     }
                 }
+                */
             }
 
             function postToServer(data, callback)
@@ -106,7 +130,7 @@
         
         <div class="page">
             <dif class="manf_logo">[manf]</dif>
-            <div class="top_nav">parts boms </div>        
+            <div class="top_nav"> user parts boms </div>        
                 <div class="part_summary">
                     
                     <img class="_thumbnail_pic"  src="../cap.jpg">
@@ -118,23 +142,27 @@
 
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='EPN'>
-                            <input type="text" class="_value" value='C_100N_X5R_16V_0603'>
+                            <input type="text" class="_value" id="EPN_VALUE" value="{{data_obj['@part']['EPN']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Description'>
-                            <input type="text" class="_value" value='Surface mount MLCC'>
+                            <input type="text" class="_value" id="DESCRIPTION_VALUE" value="{{data_obj['@part']['DESCRIPTION']}}">
+                        </div>
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='ID'>
+                            <input type="text" class="_value" id="ID_VALUE" value="{{data_obj['_id']}}" readonly=True>
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Manufacturer'>
-                            <input type="text" class="_value" value='Vishay'>
+                            <input type="text" class="_value" id="MANUFACTURER_VALUE" value="{{data_obj['@part']['MANUFACTURER']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='MPN'>
-                            <input type="text" class="_value" value='GMMBRA1608-34'>
+                            <input type="text" class="_value" id="MPN_VALUE" value="{{data_obj['@part']['MPN']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Approval'>
-                            <input type="text" class="_value" value='Pending Review'>
+                            <input type="text" class="_value" id="APPROVAL_VALUE" value="{{data_obj['@part']['APPROVAL']}}">
                         </div>
                     </div>
                 </div>
@@ -166,12 +194,12 @@
 
                 <div class="_field_container" data modified="True">
                     <input type="text" class="_key" value='EPN'>
-                    <input type="text" class="_value" value='C_100N_X5R_16V_0603'>
+                    <input type="text" class="_value" value=''>
                     <input type="text" class="_unit" value='uF'>
                 </div>
                 <div class="_field_container" data modified="True">
                     <input type="text" class="_key" value='Description'>
-                    <input type="text" class="_value" value='Surface mount MLCC'>
+                    <input type="text" class="_value" value=''>
                     <input type="text" class="_unit" value='uF'>
                 </div>
                 <div class="_field_container" data modified="True">
