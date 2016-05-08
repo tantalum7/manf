@@ -7,6 +7,7 @@ from database       import Database
 from factory        import Factory
 from index          import Index
 from settings       import Settings
+from google_auth    import GoogleAuth
 
 
 class Manf(object):
@@ -21,6 +22,8 @@ class Manf(object):
         self.factory    = Factory(self)
         self.index      = Index(self)
         self.settings   = Settings()
+        self.auth       = GoogleAuth("client_secrets.json")
+
 
 
 if __name__ == "__main__":

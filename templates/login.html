@@ -7,22 +7,25 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
     
     <script type="text/javascript">
-    
-        $(document).onload(function()
+        
+        /*
+        $(document).ready(function()
         {
-            if isLoggedIn()
+            console.log("State: {{ STATE }}");
+            
+            if (Google_isLoggedIn())
             {
-                $(".login_text").show()
-                $(".login_button").hide()
+                $(".login_text").show();
+                $(".login_button").hide();
                 
             }
             else
             {
-                $(".login_text").hide()
-                $(".login_button").show()
+                $(".login_text").hide();
+                $(".login_button").show();
             }            
         })
-        
+        */
         function Google_onSignIn(googleUser) 
         {
             var profile = googleUser.getBasicProfile();
@@ -40,9 +43,14 @@
             })
         }
         
-        function isLoggedIn()
+        function Google_signOut()
         {
-            return gapi.auth2.getAuthInstance().isSignedIn()
+            gapi.auth2.getAuthInstance().signOut();
+        }
+        
+        function Google_isLoggedIn()
+        {
+            return gapi.auth2.getAuthInstance().isSignedIn();
         }
         
         function Manf_disconnectServer() 
@@ -53,8 +61,8 @@
                      async      : false,
                      success    : function(result) 
                                   { console.log('revoke response: ' + result); },
-                     error      : function(e){console.log(e);}
-                 })
+                     error      : function(e){Google_signOut();}
+                 });
         }
 
         function Manf_connectServer(code)
@@ -64,13 +72,33 @@
                                   '/login/ajax/connect?state={{ STATE }}',
                      contentType: 'application/octet-stream; charset=utf-8',
                      success    : function(result){ console.log(result); },
-                     error      : function()
-                                  {gapi.auth2.getAuthInstance().signOut()},
+                     error      : function(){ Google_signOut(); },
                      processData: false,
                      data       : code
           });
+
         }
 
+        function connectServer_Callback(result)
+        {
+            console.log(result);
+            onSignInCallback(auth2.currentUser.get().getAuthResponse())
+
+            if (authResult['access_token'])
+            {
+                // The user is signed in
+                this.authResult = authResult;
+
+            } 
+            else if (authResult['error']) 
+            {
+                // There was an error, which means the user is not signed in.
+                // As an example, you can troubleshoot by writing to the console:
+                console.log('There was an error: ' + authResult['error']);
+            }
+
+            console.log('authResult', authResult);        
+        }
 
 </script>
     
@@ -78,9 +106,8 @@
 <body>
 
     <div class="g-signin2 login_button" data-onsuccess="Google_onSignIn"></div>
+    <div class="login_text">Your all logged in buddy</div>
 
-    <div class="login_text">You are logged in</div>
-    
 </body>
 
 </html>

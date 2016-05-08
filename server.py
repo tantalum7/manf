@@ -1,12 +1,31 @@
 
 
-from flask  import Flask, render_template, request
+from flask  import Flask, render_template, request, session
 from manf   import Manf
 from asset  import AssetNotFoundError
 
+from google_auth    import LoginFailure, LogoutFailure, GoogleAuth
+from util_funcs     import GoodJsonResponse, BadJsonResponse, GenerateRandomCharString
+
+# Prepare server instance
 server = Flask(__name__)
+server.secret_key = GenerateRandomCharString(32)
+
+# Prepare manf instance
 manf   = Manf()
 
+class RequiresAuthentication(object):
+
+    def __init__(self, f):
+        self.f = f
+        self.__name__ = f.__name__
+
+    def __call__(self, *args, **kwargs):
+
+        if manf.auth.is_authenticated():
+            return self.f()
+        else:
+            return "Can't access this page, login first (decorator)"
 
 
 @server.route("/")
@@ -27,7 +46,6 @@ def part(epn):
 
     else:
         return render_template( 'asset.html', data=part.get_json() )
-
 
 @server.route("/part/new")
 def new_part():
@@ -98,6 +116,62 @@ def asset_update():
 
     return "Good"
 
+@server.route("/login")
+def login():
+
+    if not manf.auth.is_authenticated():
+        manf.auth.start_login()
+        print "Local state: {}".format(session.get("auth_state"))
+        return render_template("login.html", CLIENT_ID=manf.auth.client_id, STATE=session.get("auth_state"))
+
+    else:
+        return "Already logged in buddy"
+
+@server.route("/login/ajax/connect", methods=['POST'])
+def login_connect():
+
+    try:
+        manf.auth.process_login(request)
+
+    except LoginFailure as failure:
+        print failure.reason
+        return BadJsonResponse(failure.reason)
+
+    else:
+
+        if session.get('relogin') is True:
+            return GoodJsonResponse('Current user is already connected.')
+
+        else:
+            return GoodJsonResponse('Successfully connected user.')
+
+@server.route("/logout")
+def logout():
+    return logout_disconnect()
+
+@server.route("/logout/ajax/disconnect", methods=['POST'])
+def logout_disconnect():
+    """Revoke current user's token and reset their session."""
+    try:
+        manf.auth.revoke()
+
+    # Catch LogoutFailure error, and return a bad response with the failure reason
+    except LogoutFailure as failure:
+        return BadJsonResponse(failure.reason)
+
+    # Re-raise any other exceptions
+    except:
+        raise
+
+    # Log out succeeded, return a good response
+    else:
+        return GoodJsonResponse("Successfully disconnected.")
+
+@server.route("/secret")
+@RequiresAuthentication
+def secret():
+    return "This is a secret page"
+
 @server.route("/index")
 def index():
 
@@ -111,6 +185,6 @@ def index():
 if __name__ == "__main__":
 
     server.debug = True
-    server.run()
+    server.run(host="localhost", port=4567)
 
 
