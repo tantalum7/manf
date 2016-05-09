@@ -131,8 +131,8 @@ input
 ._title
 {
     font-weight:                bold;
-    #background-color:           rgb(84, 100, 107) !important;
-    color:                      white !important;
+    #background-color:           grey;
+    #color:                      white !important;
     padding:                    5px;
     letter-spacing:             2px;
     float:                      left;
@@ -233,8 +233,16 @@ input
     width:                      445px;
     margin-left:                0px;
 }
-
-
+.data_tabs ._category_container
+{
+    margin-bottom:              100px;
+    
+}
+.data_tabs ._category_container ._title
+{
+    width:                      455px;
+    
+}
 
 .asset_summary_container
 {

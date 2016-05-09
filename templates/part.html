@@ -72,13 +72,32 @@
                 addNewField()
             }
 
-            function addNewField(field="Field", value="Value")
+            function addNewElectricalSpec(field="Field", value="Value", unit="unit", tolerance="0")
             {
                                 
                 var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
-                $(".asset_summary_container").append(new_field);
-                
-                $("#add_new_field").appendTo($(".asset_summary_container"));
+
+                var html = '<div class="_field_container" data modified="True">' +
+                           '<input type="text" class="_key" value="'+field+'">' +
+                           '<input type="text" class="_value" value="'+value+'">' +
+                           '<input type="text" class="_unit" value="'+unit+'">' +
+                           '</div>'
+
+                $("#ELECTRICAL_SPECS").append(html);
+            }
+
+            function addNewPhysicalSpec(field="Field", value="Value", unit="unit", tolerance="0")
+            {
+
+                var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
+
+                var html = '<div class="_field_container" data modified="True">' +
+                           '<input type="text" class="_key" value="'+field+'">' +
+                           '<input type="text" class="_value" value="'+value+'">' +
+                           '<input type="text" class="_unit" value="'+unit+'">' +
+                           '</div>'
+
+                $("#PHYSICAL_SPECS").append(html);
             }
 
             function resp(r)
@@ -88,28 +107,63 @@
 
             function handleCommitChanges()
             {
-                // Prepare data obj, and a keys array inside
-                post_data = {}
-                post_data._keys = []
-                
+                // Prepare data obj
+                post_data = { '@part' : {}, '@electrical' : {}, '@physical' : {}, '_keys' : [] }
+
                 // Iterate function over all asset summary fields
-                $(".asset_summary_field").each(function(i){
-                                        
+                $("#PART_PROPERTIES").children("._field_container").each(function(i){
+
                     // Check if the summary field has been modified
-                    if( $(this).data("modified") == "True" )
+                    //if( $(this).children("._value").data("modified") == "True" )
+                    if(1)
                     {
                         // Grab key, value from div
                         key     = $(this).children("._key").val();
                         value   = $(this).children("._value").val();
-                        
-                        // Add key:value to our data dict
-                        post_data[key] = value;
+                        unit    = $(this).children("._unit").val();
 
-                        // Append key to the keys list
-                        post_data._keys.push(key);
+                        // Add to our data dict
+                        post_data['@part'][key] = value;
                     }
-                })  
-                
+                });
+
+                // Iterate function over all asset summary fields
+                $("#ELECTRICAL_SPECS").children("._field_container").each(function(i){
+
+                    // Check if the summary field has been modified
+                    //if( $(this).children("._value").data("modified") == "True" )
+                    if(1)
+                    {
+                        // Grab key, value from div
+                        key     = $(this).children("._key").val();
+                        value   = $(this).children("._value").val();
+                        unit    = $(this).children("._unit").val();
+                        
+                        // Add to our data dict
+                        post_data['@electrical'][key] = {'value' : value, 'unit' : unit}
+                    }
+                });
+
+
+                $("#PHYSICAL_SPECS").children("._field_container").each(function(i){
+
+                    // Check if the summary field has been modified
+                    //if( $(this).children("._value").data("modified") == "True" )
+                    if(1)
+                    {
+                        // Grab key, value from div
+                        key     = $(this).children("._key").val();
+                        value   = $(this).children("._value").val();
+                        unit    = $(this).children("._unit").val();
+
+                        // Add to our data dict
+                        post_data['@physical'][key] = {'value' : value, 'unit' : unit}
+                    }
+                });
+
+                console.log(post_data);
+
+                /*
                 // Check if data obj is not empty
                 if (post_data._keys.length > 0)
                 {
@@ -119,6 +173,7 @@
                     // Post update to server
                     postToServer(post_data, resp);
                 }
+                */
             }
 
 
@@ -135,9 +190,9 @@
                     
                     <img class="_thumbnail_pic"  src="../cap.jpg">
             
-                    <div class="_category_container">
-                        <div class="_field_container _title" data modified="True">
-                            PART
+                    <div id="PART_PROPERTIES" class="_category_container">
+                        <div class="_title" data modified="True">
+                            PART PROPERTIES
                         </div>
 
                         <div class="_field_container" data modified="True">
@@ -188,37 +243,31 @@
                 
                   
             <div class="_category_container">
-                <div class="_field_container _title" data modified="True">
-                    PART
-                </div>
-
-                <div class="_field_container" data modified="True">
-                    <input type="text" class="_key" value='EPN'>
-                    <input type="text" class="_value" value=''>
-                    <input type="text" class="_unit" value='uF'>
-                </div>
-                <div class="_field_container" data modified="True">
-                    <input type="text" class="_key" value='Description'>
-                    <input type="text" class="_value" value=''>
-                    <input type="text" class="_unit" value='uF'>
-                </div>
-                <div class="_field_container" data modified="True">
-                    <input type="text" class="_key" value='Manufacturer'>
-                    <input type="text" class="_value" value='Vishay'>
-                    <input type="text" class="_unit" value='uF'>
-                </div>
-                <div class="_field_container" data modified="True">
-                    <input type="text" class="_key" value='MPN'>
-                    <input type="text" class="_value" value='GMMBRA1608-34'>
-                    <input type="text" class="_unit" value='uF'>
-                </div>
-                <div class="_field_container" data modified="True">
-                    <input type="text" class="_key" value='Approval'>
-                    <input type="text" class="_value" value='Pending Review'>
-                    <input type="text" class="_unit" value='uF'>
+                <div class="_title">ELECTRICAL</div>
+                <div id="ELECTRICAL_SPECS" class="_field_container" data modified="True">
+                    {% for parameter, data in data_obj['@electrical'].iteritems() %}
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='{{ parameter|e }}'>
+                            <input type="text" class="_value" value='{{ data["VALUE"]|e }}'>
+                            <input type="text" class="_unit" value='{{ data["UNIT"] }}'>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-                
+
+            <div class="_category_container">
+                <div class="_title">PHYSICAL</div>
+                <div id="PHYSICAL_SPECS" class="_field_container" data modified="True">
+                    {% for parameter, data in data_obj['@physical'].iteritems() %}
+                        <div class="_field_container" data modified="True">
+                            <input type="text" class="_key" value='{{ parameter|e }}'>
+                            <input type="text" class="_value" value='{{ data["VALUE"]|e }}'>
+                            <input type="text" class="_unit" value='{{ data["UNIT"] }}'>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
                 
             </div> <!-- data_tabs -->
 
