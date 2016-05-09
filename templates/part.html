@@ -55,10 +55,10 @@
                 */
             }
 
-            function postToServer(data, callback)
+            function postUpdates(data, callback)
             {
                 $.ajax({type        : "PUT",
-                        url         : "ajax",
+                        url         : "/part/ajax/update",
                         data        : JSON.stringify(data, null, '\t'),
                         dataType    : 'json',
                         contentType : 'application/json; charset=UTF-8',
@@ -81,6 +81,7 @@
                            '<input type="text" class="_key" value="'+field+'">' +
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
+                           '<input type="text" class="_tolerance" value="'+tolerance+'">' +
                            '</div>'
 
                 $("#ELECTRICAL_SPECS").append(html);
@@ -95,6 +96,7 @@
                            '<input type="text" class="_key" value="'+field+'">' +
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
+                           '<input type="text" class="_tolerance" value="'+tolerance+'">' +
                            '</div>'
 
                 $("#PHYSICAL_SPECS").append(html);
@@ -161,19 +163,16 @@
                     }
                 });
 
-                console.log(post_data);
-
-                /*
                 // Check if data obj is not empty
-                if (post_data._keys.length > 0)
+                if (1)
                 {
                     // Add id to the data
-                    post_data['_id'] = data["_id"];
+                    post_data['_id'] = json_data["_id"];
 
                     // Post update to server
-                    postToServer(post_data, resp);
+                    postUpdates(post_data, function(r){console.log(r);});
                 }
-                */
+                
             }
 
 
@@ -185,10 +184,10 @@
         
         <div class="page">
             <dif class="manf_logo">[manf]</dif>
-            <div class="top_nav"> user parts boms </div>        
+            <div class="top_nav"><a href="#">user</a> <a href="/part/index">parts</a> <a href="/bom/index">boms</a> </div>        
                 <div class="part_summary">
                     
-                    <img class="_thumbnail_pic"  src="../cap.jpg">
+                    <img class="_thumbnail_pic"  src="http://sigma.octopart.com/21441768/image/TE-Connectivity-CRG0402F10K.jpg">
             
                     <div id="PART_PROPERTIES" class="_category_container">
                         <div class="_title" data modified="True">
@@ -248,10 +247,13 @@
                     {% for parameter, data in data_obj['@electrical'].iteritems() %}
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='{{ parameter|e }}'>
-                            <input type="text" class="_value" value='{{ data["VALUE"]|e }}'>
-                            <input type="text" class="_unit" value='{{ data["UNIT"] }}'>
+                            <input type="text" class="_value" value='{{ data["value"]|e }}'>
+                            <input type="text" class="_unit" value='{{ data["unit"] }}'>
+                            <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
                         </div>
                     {% endfor %}
+                    
+                    <div class="_field_container"><i class="fa fa-plus-square" aria-hidden="true"></i> <b>Add new parameter</b></div>
                 </div>
             </div>
 
@@ -261,8 +263,9 @@
                     {% for parameter, data in data_obj['@physical'].iteritems() %}
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='{{ parameter|e }}'>
-                            <input type="text" class="_value" value='{{ data["VALUE"]|e }}'>
-                            <input type="text" class="_unit" value='{{ data["UNIT"] }}'>
+                            <input type="text" class="_value" value='{{ data["value"]|e }}'>
+                            <input type="text" class="_unit" value='{{ data["unit"] }}'>
+                            <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
                         </div>
                     {% endfor %}
                 </div>

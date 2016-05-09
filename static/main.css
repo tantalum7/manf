@@ -26,6 +26,33 @@ button:hover
     cursor:                     pointer;
 }
 
+a:link - a normal, unvisited link
+a:visited - a link the user has visited
+a:hover - a link when the user mouses over it
+a:active - a link the moment it is clicked
+
+a:link
+{
+    color:                      red;
+    text-decoration:            none;
+}
+a:visited
+{
+    color:                      red;
+    text-decoration:            none;
+}
+a:active
+{
+    color:                      red;
+    text-decoration:            none;
+}
+a:hover
+{
+    color:                      white;
+    background-color:           black;
+    text-decoration:            none;
+}
+
 input
 {
     font-family:                monospace;
@@ -156,6 +183,24 @@ input
     text-align:                 left;
     margin-left:                5px;
 }
+._tolerance
+{
+    float:                      left;
+    #font-weight:                bold;
+    width:                      50px;
+    height:                     12px;
+    #background-color:           rgb(210, 216, 217);
+    #padding:                    5px;
+    color:                      black;
+    #border:                     1px solid rgb(84, 100, 107);
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    font-size:                  8pt;
+    text-align:                 left;
+    margin-left:                5px;
+}
 
 .part_summary
 {
@@ -232,6 +277,22 @@ input
 {
     width:                      445px;
     margin-left:                0px;
+}
+.data_tabs ._field_container ._key
+{
+    width:                      220px;
+}
+.data_tabs ._field_container ._value
+{
+    width:                      100px;
+}
+.data_tabs ._field_container ._unit
+{
+    width:                      20px;
+}
+.data_tabs ._field_container ._tolerance
+{
+    width:                      50px;
 }
 .data_tabs ._category_container
 {

@@ -52,6 +52,24 @@ def part(epn):
 def new_part():
     return "Make a new part"
 
+@server.route("/part/ajax/update", methods=["PUT", "POST"])
+def part_update():
+
+    try:
+        data = request.get_json()
+        part = manf.factory.create_part(id=data['_id'])
+        part.dict_update(data)
+
+    except:
+        raise
+
+    return "stuff"
+
+
+
+
+
+
 @server.route("/bom/name/<name>")
 def bom(name):
 

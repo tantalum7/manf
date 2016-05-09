@@ -40,6 +40,10 @@ class Part(Asset):
     _FIELD_DOCS             = '@docs'
     _FIELD_PART             = '@part'
 
+    _VALUE                  = "value"
+    _TOLERANCE              = "tolerance"
+    _UNIT                   = "unit"
+
     def __init__(self, modules, id=None, fields=None):
 
         default = { '_type'          : AssetType.PART,
@@ -114,12 +118,53 @@ class Part(Asset):
     def status(self):
         return self._get_field(self._FIELD_PART).get('STATUS')
 
-    def set_physical_parameter(self, parameter, value, unit=None):
-        self._set_field('.'.join([self._FIELD_PHYSICAL, parameter]), (value, str(unit)))
+    def set_physical_parameter(self, parameter, value, unit=None, tolerance=None, other_data=None):
+        self._set_field(".".join([self._FIELD_PHYSICAL, parameter]), {self._VALUE : value, self._UNIT : unit, self._TOLERANCE : tolerance} )
 
-    def set_electrical_parameter(self, parameter, value, unit=None):
-        self._set_field("@electrical."+parameter, (value, unit))
+    def set_electrical_parameter(self, parameter, value, unit=None, tolerance=None, other_data=None):
+        self._set_field(".".join([self._FIELD_ELECTRICAL, parameter]), {self._VALUE : value, self._UNIT : unit, self._TOLERANCE : tolerance} )
 
+    def dict_update(self, update_dict):
 
+        # Check if electrical parameters passed
+        if self._FIELD_ELECTRICAL in update_dict:
 
+            # Iterate through values to be updated
+            for key, data in update_dict[self._FIELD_ELECTRICAL].iteritems():
 
+                # Set electrical parameter
+                self.set_electrical_parameter( parameter    = key,
+                                               value        = data.get(self._VALUE),
+                                               unit         = data.get(self._UNIT),
+                                               tolerance    = data.get(self._TOLERANCE)
+                                             )
+
+        # Check if electrical parameters passed
+        if self._FIELD_PHYSICAL in update_dict:
+
+            # Iterate through values to be updated
+            for key, data in update_dict[self._FIELD_PHYSICAL].iteritems():
+
+                # Set electrical parameter
+                self.set_physical_parameter( parameter      = key,
+                                             value          = data.get(self._VALUE),
+                                             unit           = data.get(self._UNIT),
+                                             tolerance      = data.get(self._TOLERANCE)
+                                           )
+
+        if self._FIELD_PART in update_dict:
+
+            if "EPN" in update_dict[self._FIELD_PART]:
+                self.EPN = update_dict[self._FIELD_PART]["EPN"]
+
+            if "DESCRIPTION" in update_dict[self._FIELD_PART]:
+                self.description = update_dict[self._FIELD_PART]["DESCRIPTION"]
+
+            if "COMPONENT_TYPE" in update_dict[self._FIELD_PART]:
+                self.component_type = update_dict[self._FIELD_PART]["COMPONENT_TYPE"]
+
+            if "MANUFACTURER" in update_dict[self._FIELD_PART]:
+                self.manufacturer = update_dict[self._FIELD_PART]["MANUFACTURER"]
+
+            if "MPN" in update_dict[self._FIELD_PART]:
+                self.MPN = update_dict[self._FIELD_PART]["MPN"]
