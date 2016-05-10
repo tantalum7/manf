@@ -24,7 +24,7 @@
             {                
                 console.log(json_data);
                 populateParameters();
-                $("._value").change( function(){$(this).addClass("edited");})
+                $("._field_container").children("input").change( function(){$(this).parent().addClass("edited");})
             }
 
             function populateParameters()
@@ -77,14 +77,14 @@
                                 
                 var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
 
-                var html = '<div class="_field_container" data modified="True">' +
+                var html = '<div class="_field_container edited" data modified="True">' +
                            '<input type="text" class="_key" value="'+field+'">' +
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
                            '<input type="text" class="_tolerance" value="'+tolerance+'">' +
                            '</div>'
 
-                $("#ELECTRICAL_SPECS").append(html);
+                $("#add_new_electrical_button").parent().before(html);
             }
 
             function addNewPhysicalSpec(field="Field", value="Value", unit="unit", tolerance="0")
@@ -92,14 +92,15 @@
 
                 var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
 
-                var html = '<div class="_field_container" data modified="True">' +
+                var html = '<div class="_field_container edited" data modified="True">' +
                            '<input type="text" class="_key" value="'+field+'">' +
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
                            '<input type="text" class="_tolerance" value="'+tolerance+'">' +
+                           '<i class="fa fa-times delete_icon"></i>' +
                            '</div>'
 
-                $("#PHYSICAL_SPECS").append(html);
+                $("#add_new_physical_button").parent().before(html);
             }
 
             function resp(r)
@@ -253,7 +254,7 @@
                         </div>
                     {% endfor %}
                     
-                    <div class="_field_container"><i class="fa fa-plus-square" aria-hidden="true"></i> <b>Add new parameter</b></div>
+                    <div class="_field_container"><i id="add_new_electrical_button" onclick="addNewElectricalSpec();" class="fa fa-plus-square" aria-hidden="true"></i></div>
                 </div>
             </div>
 
@@ -268,6 +269,8 @@
                             <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
                         </div>
                     {% endfor %}
+                    
+                    <div class="_field_container"><i id="add_new_physical_button" onclick="addNewPhysicalSpec();" class="fa fa-plus-square" aria-hidden="true"></i></div>
                 </div>
             </div>
 
