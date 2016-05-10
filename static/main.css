@@ -101,12 +101,20 @@ input
     top:                        10px;
 }
 
-.invisible
+.hidden
 {
-    display:                    None;
+    visibility:                 hidden !important;
 }
 
-
+.context_button
+{
+    opacity:                    0.5;
+}
+.context_button:hover
+{
+    opacity:                    1;
+    cursor:                     pointer;
+}
 ._field_container
 {
     color:                      black;
@@ -288,7 +296,7 @@ input
 }
 .data_tabs ._field_container ._unit
 {
-    width:                      20px;
+    width:                      50px;
 }
 .data_tabs ._field_container ._tolerance
 {
@@ -305,8 +313,13 @@ input
     
 }
 
+
 .delete_icon
 {
     color:                      red;
-    
+    cursor:                     pointer;
+}
+.delete_icon:hover
+{
+    #color:                      red;
 }

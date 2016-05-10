@@ -18,15 +18,33 @@
             
             $(document).ready(onLoad);
             
+            function bindInteractions()
+            {
+                
+                $("._field_container").hover(
+                    function(){$(this).children(".context_field_container").removeClass("hidden");},
+                    function(){$(this).children(".context_field_container").addClass("hidden");}
+                );
+                
+                
+                $("._category_container").hover(
+                    function(){$(this).find(".context_category_container").removeClass("hidden");},
+                    function(){$(this).find(".context_category_container").addClass("hidden");}
+                )
+                
             
+            }
             
             function onLoad()
             {                
                 console.log(json_data);
                 populateParameters();
-                $("._field_container").children("input").change( function(){$(this).parent().addClass("edited");})
+                $("._field_container").children("input").change( function(){$(this).parent().addClass("edited");});
+                bindInteractions();
             }
 
+            
+            
             function populateParameters()
             {
                 /*
@@ -82,9 +100,12 @@
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
                            '<input type="text" class="_tolerance" value="'+tolerance+'">' +
+                           '<i class="fa fa-times delete_icon context_button context_field_container hidden"></i>' +
                            '</div>'
 
                 $("#add_new_electrical_button").parent().before(html);
+                
+                bindInteractions();
             }
 
             function addNewPhysicalSpec(field="Field", value="Value", unit="unit", tolerance="0")
@@ -97,10 +118,12 @@
                            '<input type="text" class="_value" value="'+value+'">' +
                            '<input type="text" class="_unit" value="'+unit+'">' +
                            '<input type="text" class="_tolerance" value="'+tolerance+'">' +
-                           '<i class="fa fa-times delete_icon"></i>' +
+                           '<i class="fa fa-times delete_icon context_button context_field_container hidden"></i>' +
                            '</div>'
 
                 $("#add_new_physical_button").parent().before(html);
+                
+                bindInteractions();
             }
 
             function resp(r)
@@ -249,12 +272,129 @@
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='{{ parameter|e }}'>
                             <input type="text" class="_value" value='{{ data["value"]|e }}'>
-                            <input type="text" class="_unit" value='{{ data["unit"] }}'>
+                            <select class="_unit">
+                                    <option value="Ω"> </option>
+                                <optgroup label="Resistance">
+                                    <option value="mΩ">mΩ</option>
+                                    <option value="Ω">Ω</option>
+                                    <option value="KΩ">KΩ</option>
+                                    <option value="MΩ">MΩ</option>
+                                <optgroup label="Capacitance">
+                                    <option value="mΩ">pF</option>
+                                    <option value="Ω">nF</option>
+                                    <option value="KΩ">μF</option>
+                                    <option value="MΩ">mF</option>
+                                    <option value="MΩ">F</option>
+                                <optgroup label="Inductance">
+                                    <option value="mΩ">pH</option>
+                                    <option value="Ω">nH</option>
+                                    <option value="KΩ">μH</option>
+                                    <option value="MΩ">mH</option>
+                                    <option value="MΩ">H</option>
+                                <optgroup label="Voltage">
+                                    <option value="mΩ">pV</option>
+                                    <option value="Ω">nV</option>
+                                    <option value="KΩ">μV</option>
+                                    <option value="MΩ">mV</option>
+                                    <option value="MΩ">V</option>
+                                    <option value="MΩ">KV</option>
+                                    <option value="1">μV/s</option>
+                                    <option value="1">mV/s</option>
+                                    <option value="1">V/s</option>
+                                <optgroup label="Current">
+                                    <option value="mΩ">pA</option>
+                                    <option value="Ω">nA</option>
+                                    <option value="KΩ">μA</option>
+                                    <option value="MΩ">mA</option>
+                                    <option value="MΩ">A</option>
+                                <optgroup label="Power">
+                                    <option value="mΩ">pW</option>
+                                    <option value="Ω">nW</option>
+                                    <option value="KΩ">μW</option>
+                                    <option value="MΩ">mW</option>
+                                    <option value="MΩ">W</option>
+                                    <option value="MΩ">KW</option>
+                                    
+                                <optgroup label="Charge">
+                                    <option value="mΩ">pC</option>
+                                    <option value="Ω">nC</option>
+                                    <option value="KΩ">μC</option>
+                                    <option value="MΩ">mC</option>
+                                    <option value="MΩ">C</option>  
+                                    <option value="MΩ">KC</option>
+                                    <option value="MΩ">MC</option>
+                                <optgroup label="Time">
+                                    <option value="mΩ">pS</option>
+                                    <option value="Ω">nS</option>
+                                    <option value="KΩ">μS</option>
+                                    <option value="MΩ">mS</option>
+                                    <option value="MΩ">Sec</option>
+                                    <option value="MΩ">Min</option>
+                                    <option value="MΩ">Hrs</option>
+                                <optgroup label="Frequency">
+                                    <option value="mΩ">mHz</option>
+                                    <option value="Ω">Hz</option>
+                                    <option value="KΩ">KHz</option>
+                                    <option value="MΩ">MHz</option>
+                                    <option value="MΩ">GHz</option>
+                                    <option value="MΩ">THz</option>
+                                <optgroup label="Wavelength">
+                                    <option value="mΩ">pm</option>
+                                    <option value="Ω">nm</option>
+                                    <option value="KΩ">μm</option>
+                                    <option value="MΩ">mm</option>
+                                    <option value="MΩ">m</option>
+                                    <option value="MΩ">km</option>   
+                                <optgroup label="Bits">
+                                    <option value="mΩ">bit</option>
+                                    <option value="Ω">Kbit</option>
+                                    <option value="KΩ">Mbit</option>
+                                    <option value="MΩ">Gbit</option>
+                                    <option value="MΩ">Tbit</option>
+                                    <option value="mΩ">bit/s</option>
+                                    <option value="Ω">Kbit/s</option>
+                                    <option value="KΩ">Mbit/s</option>
+                                    <option value="MΩ">Gbit/s</option>
+                                    <option value="MΩ">Tbit/s</option>
+                                <optgroup label="Bytes">
+                                    <option value="mΩ">B</option>
+                                    <option value="Ω">KB</option>
+                                    <option value="KΩ">MB</option>
+                                    <option value="MΩ">GB</option>
+                                    <option value="MΩ">TB</option>
+                                    <option value="mΩ">B/s</option>
+                                    <option value="Ω">KB/s</option>
+                                    <option value="KΩ">MB/s</option>
+                                    <option value="MΩ">GB/s</option>
+                                    <option value="MΩ">TB/s</option>    
+                                <optgroup label="Lumnosity">    
+                                    <option value="MΩ">mcd</option>
+                                    <option value="MΩ">cd</option>
+                                    <option value="MΩ">lx</option>
+                                    <option value="MΩ">lm</option>
+                                <optgroup label="Temperature">
+                                    <option value="1">°C</option>
+                                    <option value="1">°F</option>
+                                    <option value="1">K</option>
+                                <optgroup label="Misc">
+                                    <option value="a">dB</option>
+                                    <option value="1">ppM</option>
+                                    <option value="1">ppB</option>
+                                    <option value="mΩ">%</option>
+                                    <option value="Ω">Ch</option>
+                                    <option value="Ω">O/P</option>
+                                    <option value="MΩ">mcd</option>
+                                    <option value="MΩ">cd</option>
+                                    
+
+                                
+                            </select>
                             <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
+                            <i class="fa fa-times delete_icon context_button context_field_container hidden"></i>
                         </div>
                     {% endfor %}
                     
-                    <div class="_field_container"><i id="add_new_electrical_button" onclick="addNewElectricalSpec();" class="fa fa-plus-square" aria-hidden="true"></i></div>
+                    <div class="_field_container"><i id="add_new_electrical_button" onclick="addNewElectricalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
                 </div>
             </div>
 
@@ -267,10 +407,11 @@
                             <input type="text" class="_value" value='{{ data["value"]|e }}'>
                             <input type="text" class="_unit" value='{{ data["unit"] }}'>
                             <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
+                            <i class="fa fa-times delete_icon context_button context_field_container hidden"></i>
                         </div>
                     {% endfor %}
                     
-                    <div class="_field_container"><i id="add_new_physical_button" onclick="addNewPhysicalSpec();" class="fa fa-plus-square" aria-hidden="true"></i></div>
+                    <div class="_field_container"><i id="add_new_physical_button" onclick="addNewPhysicalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
                 </div>
             </div>
 
