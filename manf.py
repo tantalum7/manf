@@ -8,6 +8,7 @@ from factory        import Factory
 from index          import Index
 from settings       import Settings
 from google_auth    import GoogleAuth
+from constants       import Constants
 
 
 class Manf(object):
@@ -23,6 +24,9 @@ class Manf(object):
         self.index      = Index(self)
         self.settings   = Settings()
         self.auth       = GoogleAuth("client_secrets.json")
+        self.constants  = Constants(self)
+
+        pass
 
 
 

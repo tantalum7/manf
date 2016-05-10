@@ -46,7 +46,7 @@ def part(epn):
 
     else:
         obj = part.get_dict()
-        return render_template( 'part.html', data=part.get_json(), data_obj=part.get_dict() )
+        return render_template( 'part.html', data=part.get_json(), data_obj=part.get_dict(), constants=manf.constants.get_dict() )
 
 @server.route("/part/new")
 def new_part():

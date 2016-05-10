@@ -173,6 +173,24 @@ input
     float:                      left;
     
 }
+._prefix
+{
+    float:                      left;
+    #font-weight:                bold;
+    width:                      30px;
+    height:                     12px;
+    background-color:           transparent;
+    #padding:                    5px;
+    color:                      black;
+    #border:                     1px solid rgb(84, 100, 107);
+    border-top:                 None;
+    border-left:                None;
+    border-right:               none;
+    border-bottom:              None;#1px dotted rgb(84, 100, 107);
+    font-size:                  8pt;
+    text-align:                 left;
+    margin-left:                5px;
+}
 ._unit
 {
     float:                      left;
