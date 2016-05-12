@@ -11,18 +11,23 @@ Run server.py to start the flask web server on localhost. An internet connection
 ### List of Features ###
 
 Parts
- * Parameters/Specs
- * Market Data (Price/Availability)
- * Status (unapproved, end of life, long lead etc)
- * Alternative parts/second sourcing
- * Stock levels/location
+
+* Parameters/Specs
+* Market Data (Price/Availability)
+* Status (unapproved, end of life, long lead etc)
+* Alternative parts/second sourcing
+* Stock levels/location
+
 Boms
+
  * Bom storage, parts linked to parts in DB
  * Bom variants
  * Bom to bom comparison
  * Compliance checking (RoHS/Reach etc)
  * MTBF maybe?
+
 Users
+
  * Authentication from google login
  * Tierd access for part creation/approval/settings control
  * ...
