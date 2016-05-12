@@ -35,16 +35,55 @@
             
             }
             
+            function popGoodNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_good");                  $(".notification").find(".icon").addClass("fa fa-thumbs-up")
+                $(".notification").find("._heaading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 2000);
+                });
+            }
+
+            function popWarningNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-triangle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_warning");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
+            function popBadNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-circle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_bad");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
             function onLoad()
-            {                
+            {
                 console.log(json_data);
                 populateParameters();
                 $("._field_container").children("input").change( function(){$(this).parent().addClass("edited");});
                 bindInteractions();
+                $(".notification").hide();
             }
 
-            
-            
+
+
             function populateParameters()
             {
                 /*
@@ -56,13 +95,13 @@
                 $('#MPN_VALUE').val(json_data['@part']['MPN']);
                 $('#APPROVAL_VALUE').val(json_data['@part']['APPROVAL']);
                 */
-                
+
                 /*
                 // Iterate through all fields in electrical specs
                 for (var item in data['@electrical'])
                 {
                     var $div = $("<div>", {class="data_tabs _category_container"});
-                    
+
                     // Check if the field is not private ( _ prefix)
                     if (field.charAt(0) != "_")
                     {
@@ -80,8 +119,10 @@
                         data        : JSON.stringify(data, null, '\t'),
                         dataType    : 'json',
                         contentType : 'application/json; charset=UTF-8',
-                        complete    : callback,
-                        fail        : callback
+                        complete    : function(){
+                            popGoodNotification("Update Successful","Changes saved to server successfully");},
+                        error      : function(r){
+                            popGoodNotification("Server Error","Server failed to save changes: "+r);}
                         });
             }
 
@@ -92,7 +133,7 @@
 
             function addNewElectricalSpec(field="Field", value="Value", unit="unit", tolerance="0")
             {
-                                
+
                 var new_field = '<div class="asset_summary_field" data-modified="True"><input type="text" class="_key" value='+field+'><input type="text" class="_value" value='+value+'></div>'
 
                 var html = '<div class="_field_container edited" data modified="True">' +
@@ -104,7 +145,7 @@
                            '</div>'
 
                 $("#add_new_electrical_button").parent().before(html);
-                
+
                 bindInteractions();
             }
 
@@ -122,7 +163,7 @@
                            '</div>'
 
                 $("#add_new_physical_button").parent().before(html);
-                
+
                 bindInteractions();
             }
 
@@ -154,7 +195,7 @@
                 });
 
                 // Iterate function over all asset summary fields
-                $("#ELECTRICAL_SPECS").children("._field_container").each(function(i){
+                $("#ELECTRICAL_SPECS").children("._field_container").not(".not_data").each(function(i){
 
                     // Check if the summary field has been modified
                     //if( $(this).children("._value").data("modified") == "True" )
@@ -163,15 +204,19 @@
                         // Grab key, value from div
                         key     = $(this).children("._key").val();
                         value   = $(this).children("._value").val();
+                        prefix  = $(this).children("._prefix").val();
                         unit    = $(this).children("._unit").val();
-                        
+
                         // Add to our data dict
-                        post_data['@electrical'][key] = {'value' : value, 'unit' : unit}
+                        post_data['@electrical'][key] = {'value'    : value,
+                                                         'prefix'   : prefix,
+                                                         'unit'     : unit,
+                                                        }
                     }
                 });
 
 
-                $("#PHYSICAL_SPECS").children("._field_container").each(function(i){
+                $("#PHYSICAL_SPECS").children("._field_container").not(".not_data").each(function(i){
 
                     // Check if the summary field has been modified
                     //if( $(this).children("._value").data("modified") == "True" )
@@ -180,10 +225,14 @@
                         // Grab key, value from div
                         key     = $(this).children("._key").val();
                         value   = $(this).children("._value").val();
+                        prefix  = $(this).children("._prefix").val();
                         unit    = $(this).children("._unit").val();
 
                         // Add to our data dict
-                        post_data['@physical'][key] = {'value' : value, 'unit' : unit}
+                        post_data['@physical'][key] = {'value'      : value,
+                                                       'prefix'     : prefix,
+                                                       'unit'       : unit,
+                                                      }
                     }
                 });
 
@@ -196,23 +245,39 @@
                     // Post update to server
                     postUpdates(post_data, function(r){console.log(r);});
                 }
-                
+
             }
 
 
 
         </script>
-        
+
     </head>
     <body>
-        
+
+        <div class="notification _good stripe_bg">
+            <i class="icon"></i>
+            <div class="_content">
+                <h3 class="_heading">Part Update Successful</h3>
+                <span class="_message">
+                    Some more interesting text that goes below
+                </span>
+            </div>
+        </div>
+
         <div class="page">
             <dif class="manf_logo">[manf]</dif>
-            <div class="top_nav"><a href="#">user</a> <a href="/part/index">parts</a> <a href="/bom/index">boms</a> </div>        
+            <div class="top_nav">
+                <a class="link_button float_right"href="/bom/index"><i class="fa fa-cog"></i>&nbsp;Settings</a>
+                <a class="link_button float_right"href="/bom/index"><i class="fa fa-table"></i>&nbsp;Boms</a>
+                <a class="link_button float_right"href="/part/index"><i class="fa fa-puzzle-piece"></i>&nbsp;Parts</a>
+                <a class="link_button float_right" href="#"> <i class="fa fa-user"></i>&nbsp;User</a>
+
+            </div>
                 <div class="part_summary">
-                    
+
                     <img class="_thumbnail_pic"  src="http://sigma.octopart.com/21441768/image/TE-Connectivity-CRG0402F10K.jpg">
-            
+
                     <div id="PART_PROPERTIES" class="_category_container">
                         <div class="_title" data modified="True">
                             PART PROPERTIES
@@ -220,11 +285,11 @@
 
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='EPN'>
-                            <input type="text" class="_value" id="EPN_VALUE" value="{{data_obj['@part']['EPN']}}">
+                            <input type="text" class="_value _editable_effect" id="EPN_VALUE" value="{{data_obj['@part']['EPN']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Description'>
-                            <input type="text" class="_value" id="DESCRIPTION_VALUE" value="{{data_obj['@part']['DESCRIPTION']}}">
+                            <input type="text" class="_value _editable_effect" id="DESCRIPTION_VALUE" value="{{data_obj['@part']['DESCRIPTION']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='ID'>
@@ -232,19 +297,19 @@
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Manufacturer'>
-                            <input type="text" class="_value" id="MANUFACTURER_VALUE" value="{{data_obj['@part']['MANUFACTURER']}}">
+                            <input type="text" class="_value _editable_effect" id="MANUFACTURER_VALUE" value="{{data_obj['@part']['MANUFACTURER']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='MPN'>
-                            <input type="text" class="_value" id="MPN_VALUE" value="{{data_obj['@part']['MPN']}}">
+                            <input type="text" class="_value _editable_effect" id="MPN_VALUE" value="{{data_obj['@part']['MPN']}}">
                         </div>
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='Approval'>
-                            <input type="text" class="_value" id="APPROVAL_VALUE" value="{{data_obj['@part']['APPROVAL']}}">
+                            <input type="text" class="_value _editable_effect" id="APPROVAL_VALUE" value="{{data_obj['@part']['APPROVAL']}}">
                         </div>
                     </div>
                 </div>
-            
+
             <div class="data_tabs" >
                 <div class="_menu">
                     <div class="_item">
@@ -263,8 +328,8 @@
                         MARKET DATA
                     </div>
                 </div>
-                
-                  
+
+
             <div class="_category_container">
                 <div class="_title">ELECTRICAL</div>
                 <div id="ELECTRICAL_SPECS" class="_field_container" data modified="True">
@@ -272,24 +337,28 @@
                         <div class="_field_container" data modified="True">
                             <input type="text" class="_key" value='{{ parameter|e }}'>
                             <input type="text" class="_value" value='{{ data["value"]|e }}'>
+                            <div class="prefix_select_container _editable_effect">
                             <select class="_prefix">
                                 <option value="None"> </option>
                                 {% for key, value in constants['prefixes'].iteritems() %}
                                 <option value="{{ key }}">{{ value['SYMBOL'] }}</option>
                                 {% endfor %}
                             </select>
+                            </div>
+                            <div class="unit_select_container _editable_effect">
                             <select class="_unit">
                                 <option value="None"> </option>
                                 {% for key, value in constants['electrical_units'].iteritems() %}
                                 <option value="{{ key }}">{{ value['SYMBOL'] }}</option>
                                 {% endfor %}
                             </select>
+                            </div>
                             <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
                             <i class="fa fa-times delete_icon context_button context_field_container hidden"></i>
                         </div>
                     {% endfor %}
-                    
-                    <div class="_field_container"><i id="add_new_electrical_button" onclick="addNewElectricalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
+
+                    <div class="_field_container not_data"><i id="add_new_electrical_button" onclick="addNewElectricalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
                 </div>
             </div>
 
@@ -298,18 +367,27 @@
                 <div id="PHYSICAL_SPECS" class="_field_container" data modified="True">
                     {% for parameter, data in data_obj['@physical'].iteritems() %}
                         <div class="_field_container" data modified="True">
-                            <input type="text" class="_key" value='{{ parameter|e }}'>
-                            <input type="text" class="_value" value='{{ data["value"]|e }}'>
-                            <input type="text" class="_unit" value='{{ data["unit"] }}'>
-                            <input type="text" class="_tolerance" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
+                            <input type="text" class="_key _editable_effect" value='{{ parameter|e }}'>
+                            <input type="text" class="_value _editable_effect" value='{{ data["value"]|e }}'>
+                            <input type="text" class="_unit _editable_effect" value='{{ data["unit"] }}'>
+                            <input type="text" class="_tolerance _editable_effect" value='{{ data["tolerance"] if data["tolerance"] else " " }}'>
                             <i class="fa fa-times delete_icon context_button context_field_container hidden"></i>
                         </div>
                     {% endfor %}
-                    
-                    <div class="_field_container"><i id="add_new_physical_button" onclick="addNewPhysicalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
+
+                    <div class="_field_container not_datas"><i id="add_new_physical_button" onclick="addNewPhysicalSpec();" class="fa fa-plus-square context_button context_category_container hidden"></i></div>
                 </div>
             </div>
 
+            <div class="_bottom_buttons">
+                <a class="link_button float_right" onclick="handleCommitChanges();">
+                    <i class="fa fa-floppy-o"></i>&nbsp;Save Changes
+                </a>
+
+                <a class="link_button float_right">
+                    <i class="fa fa-refresh"></i>&nbsp;Revert Changes
+                </a>
+            </div>
                 
             </div> <!-- data_tabs -->
 

@@ -25,34 +25,48 @@ button:hover
     background-color:           teal;
     cursor:                     pointer;
 }
+.float_left
+{
+    float:                      left;
+}
+.float_right
+{
+    float:                      right;
+}
 
-a:link - a normal, unvisited link
-a:visited - a link the user has visited
-a:hover - a link when the user mouses over it
-a:active - a link the moment it is clicked
-
+a:
+{
+    text-decoration:            none;
+    cursor:                     pointer !important;
+}
 a:link
 {
-    color:                      red;
     text-decoration:            none;
 }
 a:visited
 {
-    color:                      red;
     text-decoration:            none;
 }
 a:active
 {
-    color:                      red;
     text-decoration:            none;
 }
 a:hover
 {
-    color:                      white;
-    background-color:           black;
     text-decoration:            none;
 }
-
+.link_button
+{
+    padding:                    3px;
+    margin-left:                10px;
+    color:                      black;
+    cursor:                     pointer;
+}
+.link_button:hover
+{
+    color:                      white;
+    background-color:           black;
+}
 input
 {
     font-family:                monospace;
@@ -83,6 +97,55 @@ input
     background-color:           white;
     padding:                    10px;
     border:                     1px solid rgb(200, 200, 200);
+}
+
+.notification
+{
+    position:                   fixed;
+    top:                        0px;
+    #width:                      632px;
+    left:                       0px;
+    right:                      0px;
+    height:                     30px;
+    margin:                     auto;
+    z-index:                    100;
+    padding:                    20px;
+}
+.notification i
+{
+    float:                      left;
+    font-size:                  18pt;
+    margin-right:               20px;
+    color:                      white;
+    bottom:                     0px;
+}
+
+.notification ._content
+{
+    #float:                      left;
+    display:                    inline-block;
+    color:                      white;
+    padding:                    0px;
+}
+.notification h3
+{
+    font-size:                  12pt;
+    font-weight:                bold;
+    margin:                     0px;
+    padding:                    0px;
+}
+
+.notification._good
+{
+    background-color:           #61b832;
+}
+.notification._warning
+{
+    background-color:           #eaaf51;
+}
+.notification._bad
+{
+    background-color:           #de4343;
 }
 
 .manf_logo
@@ -120,7 +183,7 @@ input
     color:                      black;
     #background-color:           rgb(210, 216, 217);
     #border:                     1px solid black;
-    padding:                    5px; 
+    padding:                    5px;
     float:                      left;
     margin-left:                10px;
     margin-top:                 0px;
@@ -171,14 +234,14 @@ input
     padding:                    5px;
     letter-spacing:             2px;
     float:                      left;
-    
+
 }
 ._prefix
 {
     float:                      left;
     #font-weight:                bold;
-    width:                      30px;
-    height:                     12px;
+    width:                      35px;
+    height:                     15px;
     background-color:           transparent;
     #padding:                    5px;
     color:                      black;
@@ -188,15 +251,19 @@ input
     border-right:               none;
     border-bottom:              None;#1px dotted rgb(84, 100, 107);
     font-size:                  8pt;
-    text-align:                 left;
+    text-align:                 right;
     margin-left:                5px;
+}
+._editable_effect:hover
+{
+    background-color:           rgb(230, 230, 250);
 }
 ._unit
 {
     float:                      left;
     #font-weight:                bold;
-    width:                      50px;
-    height:                     12px;
+    width:                      35px;
+    height:                     15px;
     background-color:           transparent;
     #padding:                    5px;
     color:                      black;
@@ -232,7 +299,7 @@ input
 {
     #background-color:           rgb(101, 122, 143);
     padding-bottom:             10px;
-    margin-bottom:              10px; 
+    margin-bottom:              10px;
     margin-top:                 15px;
     #border:                     1px solid black;
     overflow:                   auto;
@@ -245,7 +312,7 @@ input
     float:                      left;
     background-color:           None;
     width:                      200px;
-    margin-left:                10px;   
+    margin-left:                10px;
 }
 .part_summary ._category_container
 {
@@ -273,8 +340,8 @@ input
 .data_tabs
 {
     padding-bottom:             10px;
-    margin-bottom:              50px;           
-    overflow:                   auto;   
+    margin-bottom:              50px;
+    overflow:                   auto;
     border:                     1px solid black;
     padding:                    10px
 }
@@ -282,7 +349,7 @@ input
 {
     position:                   relative;
     width:                      610px;
-    margin-bottom:              30px; 
+    margin-bottom:              30px;
 }
 .data_tabs ._menu ._item
 {
@@ -323,15 +390,40 @@ input
 .data_tabs ._category_container
 {
     margin-bottom:              100px;
-    
+
 }
 .data_tabs ._category_container ._title
 {
     width:                      455px;
-    
+
+}
+.data_tabs ._bottom_buttons
+{
+    float:                      right;
+    width:                      400px;
+
+}
+.data_tabs ._bottom_buttons ._item
+{
+    float:                      right;
+    margin-left:                10px;
+    padding:                    3px;
+
 }
 
-
+.prefix_select_container
+{
+    width:                      15px;
+    overflow:                   hidden;
+    float:                      left;
+}
+.unit_select_container
+{
+    width:                      25px;
+    overflow:                   hidden;
+    float:                      left;
+    margin-left:                -5px;
+}
 .delete_icon
 {
     color:                      red;
@@ -340,4 +432,51 @@ input
 .delete_icon:hover
 {
     #color:                      red;
+}
+
+.stripe_bg
+{
+    -webkit-background-size: 40px 40px;
+    -moz-background-size: 40px 40px;
+    background-size: 40px 40px;
+    background-image: -webkit-gradient(linear, left top, right bottom,
+                color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
+                color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
+                color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
+                         to(transparent));
+     background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                         transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                         transparent 75%, transparent);
+     background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                         transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                         transparent 75%, transparent);
+     background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                          transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                          transparent 75%, transparent);
+     background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                          transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                           transparent 75%, transparent);
+     background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+                           transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+                            transparent 75%, transparent);
+    -webkit-animation: animate-bg 5s linear infinite;
+    -moz-animation: animate-bg 5s linear infinite;
+}
+
+@-webkit-keyframes animate-bg{
+    from {
+       background-position: 0 0;
+    }
+    to {
+       background-position: -80px 0;
+    }
+}
+
+@-moz-keyframes animate-bg{
+    from {
+       background-position: 0 0;
+    }
+    to {
+       background-position: -80px 0;
+    }
 }
