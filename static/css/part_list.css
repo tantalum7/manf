@@ -1,0 +1,38 @@
+.table_container
+{
+    margin-top: 10px;
+    border: 1px solid black;
+    padding: 10px;
+}
+.table_container table
+{
+    border:             1px solid #ddd;
+    border-collapse:    collapse;
+}
+.table_container tr
+{
+    display:            table-row;
+   # background-color:   grey;
+    border:             1px solid #ddd;
+}
+.table_container tr:hover
+{
+    background-color:   #F5F5F5;
+    #background-color: red;
+}
+.table_container td, th
+{
+    border:             1px solid #ddd;
+    padding:            10px;
+}
+
+
+
+
+
+.filters_container
+{
+    margin-top: 20px;
+    border: 1px solid black;
+    padding: 10px;
+}

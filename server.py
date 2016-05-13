@@ -3,6 +3,7 @@
 from flask  import Flask, render_template, request, session
 from manf   import Manf
 from asset  import AssetNotFoundError
+from common_html    import html
 
 from google_auth    import LoginFailure, LogoutFailure, GoogleAuth
 from util_funcs     import GoodJsonResponse, BadJsonResponse, GenerateRandomCharString
@@ -46,11 +47,19 @@ def part(epn):
 
     else:
         obj = part.get_dict()
-        return render_template( 'part.html', data=part.get_json(), data_obj=part.get_dict(), constants=manf.constants.get_dict() )
+        return render_template( 'part.html', data=part.get_json(), data_obj=part.get_dict(), constants=manf.constants.get_dict(), html=html )
 
 @server.route("/part/new")
 def new_part():
     return "Make a new part"
+
+
+@server.route("/part/list")
+def part_list():
+
+    part_list = manf.database.find_many(filter={'_type':'*PART'}).as_list()
+
+    return render_template('part_list.html', data=part_list, html=html)
 
 @server.route("/part/ajax/update", methods=["PUT", "POST"])
 def part_update():

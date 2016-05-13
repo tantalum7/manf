@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Part</title>
+        
+        <link rel="stylesheet" href="{{url_for('static', filename='css/common.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/part_list.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.css')}}">
+        <script src="{{url_for('static', filename='js/jquery-2.2.3.min.js')}}"></script>
+        <script>
+
+            console.log(" {{ data }} ");
+            
+            $(document).ready(onLoad);
+
+            function popGoodNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_good");                  $(".notification").find(".icon").addClass("fa fa-thumbs-up")
+                $(".notification").find("._heaading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 2000);
+                });
+            }
+
+            function popWarningNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-triangle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_warning");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
+            function popBadNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-circle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_bad");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
+            function onLoad()
+            {
+                $(".notification").hide();
+                console.log("onload");
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+         {{ html.notification | safe }}
+
+        <div class="page">
+            {{ html.logo | safe }}
+            {{ html.navigation | safe }}
+
+            <div class="filters_container">
+                stuff here
+                a
+                a
+                a
+                a
+
+
+            </div>
+
+            <div class="table_container">
+                <table>
+
+                    <tr>
+                        <th>EPN</th>
+                        <th>COMPONENT TYPE</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+
+                    {% for item in data %}
+                    <tr>
+                        <td><a href="/part/epn/{{ item['@part']['EPN'] }}">{{ item['@part']['EPN'] }}</a></td>
+                        <td>{{ item['@part']['COMPONENT_TYPE'] }}</td>
+                        <td>{{ item['@part']['DESCRIPTION'] }}</td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+            <a href="https://tools.eatonelectronics.com/tools/parametric-search">example table here</a>
+
+        </div> <!-- page -->        
+    </body>
+</html>
