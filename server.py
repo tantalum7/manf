@@ -1,6 +1,6 @@
 
 
-from flask  import Flask, render_template, request, session
+from flask  import Flask, render_template, request, session, g
 from manf   import Manf
 from asset  import AssetNotFoundError
 from common_html    import html
@@ -9,13 +9,18 @@ from common_html    import html
 from google_auth    import LoginFailure, LogoutFailure
 from manf   import Manf
 from util_funcs     import GoodJsonResponse, BadJsonResponse, GenerateRandomCharString
+from time import time
+import sys
 
 # Prepare server instance
 server = Flask(__name__)
 server.secret_key = GenerateRandomCharString(32)
 
 # Prepare manf instance
-manf   = Manf()
+if "angela" in sys.argv:
+    manf    = Manf(db_addr=("localhost", 27027)) # We're running on angela server, DB is local not remote
+else:
+    manf    = Manf()
 
 class RequiresAuthentication(object):
 
@@ -30,6 +35,17 @@ class RequiresAuthentication(object):
         else:
             return "Can't access this page, login first (decorator)"
 
+
+@server.before_request
+def before_request():
+    g.request_start_time = time()
+
+@server.teardown_request
+def teardown_request(execption):
+    if g.get('request_start_time'):
+        duration = (time() - g.request_start_time) * 1000
+        if duration > manf.settings.request_time_warning:
+            server.logger.warning("Slow request [{}] : {}ms".format(request.path, duration))
 
 @server.route("/")
 def hello():
@@ -59,7 +75,7 @@ def new_part():
 @server.route("/part/list")
 def part_list():
 
-    part_list = manf.database.find_many(filter={'_type':'*PART'}).as_list()
+    part_list = manf.database.find_many(filter={'_type':'*PART'}, projection=['@part']).as_list()
 
     return render_template('part_list.html', data=part_list, html=html)
 
@@ -203,6 +219,8 @@ def index():
 if __name__ == "__main__":
 
     server.debug = True
-    server.run(host="localhost", port=4567)
 
-
+    if "angela" in sys.argv:
+        server.run(host="45.58.35.135", port=80) # We're running on angela server, server has external IP on port 80
+    else:
+        server.run(host="localhost", port=4567)

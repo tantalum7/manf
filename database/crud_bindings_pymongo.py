@@ -3,6 +3,7 @@
 from pymongo    import MongoClient, ASCENDING, DESCENDING
 from bson       import objectid
 from time       import time
+import xxh
 
 # Project imports
 from asset import Asset, AssetNotFoundError
@@ -86,6 +87,84 @@ class SearchResult(object):
         return [data for data in self]
 
 
+def _cached(f):
+
+    def _create_cache_key(f, arg_list, kwarg_dict):
+        key_dict = { "NAME" : str(f.__name__) }
+        key_dict.update( {i : str(v) for i, v in enumerate(arg_list)} )
+        key_dict.update( kwarg_dict )
+        key_list = [ ":".join([str(k), str(key_dict[k])]) for k in sorted(key_dict.keys()) ]
+        key_str = "#".join(key_list)
+        return xxh.hash32(key_str)
+
+    def wrapper(*args, **kwargs):
+
+        t = time()
+
+        cache = args[0].cache
+
+        # Prepare key
+        key = _create_cache_key(f, args, kwargs)
+
+        # Check if there is a valid result in the cache
+        try:
+            cached_result = cache.get(key)
+
+        except KeyError:
+            print "No cached result found for"+str(key)
+            result = f(*args, **kwargs)
+            cache.add(key, result)
+            print "Wrapper took {}s".format(time() - t)
+            return result
+
+        except:
+            raise
+
+        else:
+            print "Returning cached result"
+            print "Wrapper took {}s".format(time() - t)
+            return cached_result
+
+    return wrapper
+
+
+class _SimpleCache(object):
+
+    class _SimpleCacheObject(object):
+        def __init__(self, key, value, lifespan):
+            self.key            = key
+            self.value          = value
+            self.lifespan       = lifespan
+            self.creation_time  = time()
+            self.access_count   = 0
+
+        def is_alive(self):
+            return time() - self.creation_time < self.lifespan
+
+    def __init__(self, default_lifespan=60):
+        self.default_lifespan   = default_lifespan
+        self._cache_objects     = {}
+
+    def add(self, key, value, lifespan=None):
+        self._cache_objects[key] = self._SimpleCacheObject(key=key, value=value,
+                                                           lifespan=self.default_lifespan if lifespan is None else lifespan)
+
+    def get(self, key):
+
+        if not self._cache_objects[key].is_alive():
+            del self._cache_objects[key]
+            raise KeyError()
+
+        self._cache_objects[key].access_count += 1
+        return self._cache_objects[key].value
+
+    def clear_item(self, key):
+        self._cache_objects.pop(key, None)
+
+    def clear_all(self):
+        self._cache_objects = {}
+
+
 class Database(object):
 
     def __init__(self, ip_port_tuple):
@@ -95,6 +174,9 @@ class Database(object):
 
         # Create ref to manf database assets collection
         self.db = self.client.manf_db.assets
+
+        # Create local memory cache
+        self.cache = _SimpleCache()
 
     # CRUD
 
@@ -108,10 +190,12 @@ class Database(object):
         return OperationResult(success  = mongo_result.acknowledged,
                                op_count = mongo_result.modified_count)
 
-    def find_one(self, filter=None, projection=None, sort=None):
+    @_cached
+    def find_one(self, filter=None, projection=None, sort=None, ignore_cache=False):
         return self.db.find_one(filter=filter, projection=projection, sort=sort)
 
-    def find_many(self, filter=None, projection=None, limit=0, sort=None):
+    @_cached
+    def find_many(self, filter=None, projection=None, limit=0, sort=None, ignore_cache=False):
         return SearchResult( self.db.find(filter=filter, projection=projection, limit=limit, sort=sort) )
 
     def insert_one(self, data):
@@ -139,12 +223,26 @@ class Database(object):
     def id(self, id_string):
         return id_string if isinstance(id_string, objectid.ObjectId) else objectid.ObjectId(id_string)
 
+    def _cache_key(self, arg_dict):
+        return ",".join([":".join([str(k), str(v)]) for k, v in arg_dict.items()])
+
+
+
+
+def my_deco(f):
+    print "my_deco({})".format(f)
+    return f
+
+@_cached
+def my_func(*args):
+    return
+
 if __name__ == "__main__":
 
-    from part import Part
-    from constants import Units
-    db = Database(0)
-
+    my_func({'1key' : '1value'}, "str_val", [1, 2, 3])
+    my_func({'1key' : '1value'}, "str_val", [1, 2, 1])
+    my_func({'1key' : '1value'}, "str_val", [1, 2, 3])
+    my_func("str_val", {'1key' : '1value'}, [1, 2, 3])
 
 
 

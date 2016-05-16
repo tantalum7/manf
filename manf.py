@@ -18,7 +18,7 @@ class Manf(object):
     class NotFoundError(Exception):
         pass
 
-    def __init__(self):
+    def __init__(self, db_addr=("45.58.35.135", 27027)):
 
         # Init class vars
         self.database   = Database( ("45.58.35.135", 27027) )
