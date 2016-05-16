@@ -5,7 +5,9 @@ from manf   import Manf
 from asset  import AssetNotFoundError
 from common_html    import html
 
-from google_auth    import LoginFailure, LogoutFailure, GoogleAuth
+from common_html    import html
+from google_auth    import LoginFailure, LogoutFailure
+from manf   import Manf
 from util_funcs     import GoodJsonResponse, BadJsonResponse, GenerateRandomCharString
 
 # Prepare server instance
@@ -112,24 +114,12 @@ def bom(name):
 
         return rtn_string + "</table>"
 
-@server.route("/bom/index")
-def bom_index():
+@server.route("/bom/list")
+def bom_list():
 
-    results = manf.database.find_many(filter={"_type":"*BOM"}, projection=["@bom"])
+    bom_list = manf.database.find_many(filter={"_type":"*BOM"}, projection=["@bom"]).as_list()
 
-    html_string = ""
-
-
-    if results:
-
-        for bom in results:
-
-            html_string += "{} : {}<br>".format(bom['@bom']['NAME'], bom['@bom']['DESCRIPTION'])
-
-    else:
-        html_string = "Narda"
-
-    return html_string
+    return render_template('bom_list.html', data=bom_list, html=html)
 
 @server.route("/asset/ajax", methods=['PUT', 'POST'])
 def asset_update():

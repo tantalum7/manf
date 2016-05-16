@@ -3,7 +3,7 @@
 navigation  = """<div class="top_nav">
                      <a class="link_button float_right"href="/bom/index"><i class="fa fa-cog"></i>&nbsp;Settings</a>
                      <a class="link_button float_right"href="/bom/index"><i class="fa fa-table"></i>&nbsp;Boms</a>
-                     <a class="link_button float_right"href="/part/index"><i class="fa fa-puzzle-piece"></i>&nbsp;Parts</a>
+                     <a class="link_button float_right"href="/part/list"><i class="fa fa-puzzle-piece"></i>&nbsp;Parts</a>
                      <a class="link_button float_right" href="#"> <i class="fa fa-user"></i>&nbsp;User</a>
                  </div>"""
 
