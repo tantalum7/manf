@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Part</title>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='css/common.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/part_list.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.css')}}">
+        <script src="{{url_for('static', filename='js/jquery-2.2.3.min.js')}}"></script>
+        <script src="{{url_for('static', filename='js/list.min.js')}}"></script>
+        <script>
+
+            var partList = 0;
+
+
+            $(document).ready(onLoad);
+
+            function popGoodNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_good");                  $(".notification").find(".icon").addClass("fa fa-thumbs-up")
+                $(".notification").find("._heaading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 2000);
+                });
+            }
+
+            function popWarningNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-triangle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_warning");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
+            function popBadNotification(heading="Title", message=" ")
+            {
+                $(".notification").find(".icon").removeClass("fa fa-thumbs-up fa-exclamation-triangle fa-exclamation-circle");
+                $(".notification").find(".icon").addClass("fa fa-exclamation-circle")
+                $(".notification").removeClass("_good _warning _bad");
+                $(".notification").addClass("_bad");
+                $(".notification").find("._heading").text(heading);
+                $(".notification").find("._message").text(message);
+                $(".notification").slideDown(400, function(){
+                    setTimeout(function(){ $(".notification").slideUp(); }, 10000);
+                });
+            }
+
+            function onLoad()
+            {
+                $(".notification").hide();
+                console.log("onload");
+
+            }
+
+        </script>
+
+    </head>
+    <body>
+
+         {{ html.notification | safe }}
+
+        <div class="page">
+            {{ html.logo | safe }}
+            {{ html.navigation | safe }}
+
+
+
+            <div id="parts_list" >
+
+                <div class="filters_container">
+                    Filter<br>
+                    Component Type<br>
+                    Status (approved, eol, do not use etc)<br>
+                    Used Before?<br>
+                    <input class="search" placeholder="Search" />
+
+                </div>
+                <div class="table_container">
+
+
+                <table>
+                    <tr>
+                        <th onclick="sort_by_epn();">EPN <i id="EPN_SORT" class="sort_icon fa"></i></th>
+                        <th onclick="sort_by_comp_type();">COMPONENT TYPE <i id="COMP_SORT" class="sort_icon fa"></i></th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+
+                    <tbody class="list">
+                        {% for item in data %}
+                        <tr>
+                            <td class="NAME"><a href="/part/epn/{{ item['@bom']['NAME'] }}">{{ item['@bom']['NAME'] }}</a></td>
+
+                            <td class="BOM_TYPE">{{ item['@bom']['BOM_TYPE'] }}</td>
+
+                            <td class="DESCRIPTION">{{ item['@bom']['DESCRIPTION'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="https://tools.eatonelectronics.com/tools/parametric-search">example table here</a>
+            </div>
+        </div> <!-- page -->
+    </body>
+
+    <script>
+
+            var options = { valueNames: [ 'EPN', 'COMP_TYPE', 'DESCRIPTION' ] };
+            partList = new List('parts_list', options);
+            var sort_status = "";
+
+            function sort_by_epn()
+            {
+                if (sort_status == "EPN_ASC")
+                {
+                    partList.sort("EPN", {order:"desc"});
+                    sort_status = "EPN_DESC";
+                    $(".sort_icon").removeClass("fa-sort-asc fa-sort-desc");
+                    $("#EPN_SORT").addClass("fa-sort-desc");
+                }
+                else
+                {
+                    partList.sort("EPN", {order : "asc"});
+                    sort_status = "EPN_ASC";
+                    $(".sort_icon").removeClass("fa-sort-asc fa-sort-desc");
+                    $("#EPN_SORT").addClass("fa-sort-asc");
+                }
+            }
+
+            function sort_by_comp_type()
+            {
+                if (sort_status == "COMP_ASC")
+                {
+                    partList.sort("COMPONENT_TYPE", {order:"desc"});
+                    sort_status = "COMP_DESC";
+                    $(".sort_icon").removeClass("fa-sort-asc fa-sort-desc");
+                    $("#COMP_SORT").addClass("fa-sort-desc");
+                }
+                else
+                {
+                    partList.sort("COMPONENT_TYPE", {order : "asc"});
+                    sort_status = "COMP_ASC";
+                    $(".sort_icon").removeClass("fa-sort-asc fa-sort-desc");
+                    $("#COMP_SORT").addClass("fa-sort-asc");
+                }
+            }
+    </script>
+
+</html>
